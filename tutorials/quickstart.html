@@ -362,31 +362,33 @@ using <code class="docutils literal notranslate"><span class="pre">pip</span></c
 </div>
 <p>With <em>lightkurve</em> installed, it is easy to extract brightness time
 series data (astronomers call this a <em>lightcurve</em>) from the tiny images
-of stars collected by the Kepler spacecraft.</p>
+of stars collected by NASA’s Kepler and TESS planet-hunting telescopes.</p>
 <p>For example, let’s download and display the pixels of a famous star
 named <a class="reference external" href="https://en.wikipedia.org/wiki/KIC_8462852">KIC 8462852</a>, also
-known as <em>Tabby’s Star</em> or <em>Boyajian’s Star</em>.</p>
-<p>First, we start Python and import the <code class="docutils literal notranslate"><span class="pre">KeplerTargetPixelFile</span></code> class:</p>
+known as <em>Tabby’s Star</em> or <em>Boyajian’s Star</em>, which is known to show
+unusual light fluctuations.</p>
+<p>First, we start Python and use the <code class="docutils literal notranslate"><span class="pre">search_targetpixelfile</span></code> function
+to obtain the Kepler pixel data for the star from the <a class="reference external" href="https://archive.stsci.edu/kepler/">data
+archive</a>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">lightkurve</span> <span class="k">import</span> <span class="n">KeplerTargetPixelFile</span>
+<span></span><span class="kn">from</span> <span class="nn">lightkurve</span> <span class="k">import</span> <span class="n">search_targetpixelfile</span>
+<span class="n">pixelfile</span> <span class="o">=</span> <span class="n">search_targetpixelfile</span><span class="p">(</span><span class="mi">8462852</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;hardest&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
-<p>Next, we obtain the Kepler pixel data for the star from the <a class="reference external" href="https://archive.stsci.edu/kepler/">data
-archive</a>:</p>
+<p>Next, let’s display the first image in this data set:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">KeplerTargetPixelFile</span><span class="o">.</span><span class="n">from_archive</span><span class="p">(</span><span class="mi">8462852</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
-                                         <span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;hardest&#39;</span><span class="p">);</span>
+<span></span><span class="n">pixelfile</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -394,38 +396,18 @@ archive</a>:</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-Downloading URL https://mast.stsci.edu/api/v0/download/file?uri=mast:Kepler/url/missions/kepler/target_pixel_files/0084/008462852/kplr008462852-2013098041711_lpd-targ.fits.gz to ./mastDownload/Kepler/kplr008462852_lc_Q111111111111111111/kplr008462852-2013098041711_lpd-targ.fits.gz ... [Done]
-</pre></div></div>
-</div>
-<p>Next, let’s display the first image in this data set:</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/tutorials_quickstart_6_0.png" src="../_images/tutorials_quickstart_6_0.png" />
+<img alt="../_images/tutorials_quickstart_4_0.png" src="../_images/tutorials_quickstart_4_0.png" />
 </div>
 </div>
 <p>It looks like the star is an isolated object, so we can extract a
 lightcurve by simply summing up all the pixel values in each image:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [4]:
+<span></span>In [3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">);</span>
+<span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">pixelfile</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -435,7 +417,7 @@ The time is in units of <em>days</em> and the flux is in units
 <em>electrons/second</em>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [5]:
+<span></span>In [4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -445,25 +427,25 @@ The time is in units of <em>days</em> and the flux is in units
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>Out[5]:
+<span></span>Out[4]:
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>(array([ 1472.11777934,  1472.13821223,  1472.15864492, ...,  1557.89718798,
-         1557.9380561 ,  1557.95849016]),
- array([ 258645.03125 ,  258660.046875,  258690.078125, ...,  258929.859375,
-         258884.65625 ,  258865.59375 ], dtype=float32))
+<span></span>(array([1472.11777934, 1472.13821223, 1472.15864492, ..., 1557.89718798,
+        1557.9380561 , 1557.95849016]),
+ array([258645.03, 258660.05, 258690.08, ..., 258929.86, 258884.66,
+        258865.6 ], dtype=float32))
 </pre></div>
 </div>
 </div>
 <p>We can plot these data using the <code class="docutils literal notranslate"><span class="pre">plot()</span></code> method:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [6]:
+<span></span>In [5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">);</span>
+<span></span><span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -471,7 +453,7 @@ The time is in units of <em>days</em> and the flux is in units
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_quickstart_12_0.png" src="../_images/tutorials_quickstart_12_0.png" />
+<img alt="../_images/tutorials_quickstart_10_0.png" src="../_images/tutorials_quickstart_10_0.png" />
 </div>
 </div>
 <p>The plot reveals a short-lived 20% dip in the brightness of the star. It
@@ -499,7 +481,7 @@ star</a>!</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors
+        &copy; Copyright lightkurve developers and contributors.
 
     </p>
   </div>
@@ -518,24 +500,21 @@ star</a>!</p>
 
   
 
-    
-    
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'../',
-              VERSION:'1.0b21',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0b21',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

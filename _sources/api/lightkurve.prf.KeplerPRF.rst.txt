@@ -12,12 +12,10 @@ KeplerPRF
 
       ~KeplerPRF.__call__
       ~KeplerPRF.evaluate
-      ~KeplerPRF.gradient
       ~KeplerPRF.plot
 
    .. rubric:: Methods Documentation
 
    .. automethod:: __call__
    .. automethod:: evaluate
-   .. automethod:: gradient
    .. automethod:: plot

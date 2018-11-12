@@ -282,35 +282,23 @@
 </div>
 <div class="section" id="class-inheritance-diagram">
 <h2>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Permalink to this headline">¶</a></h2>
-digraph inheritance2633681e36 {
-rankdir=LR;
-size=&quot;8.0, 12.0&quot;;
-  &quot;BackgroundParameters&quot; [URL=&quot;lightkurve.prf.BackgroundParameters.html#lightkurve.prf.BackgroundParameters&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to hold the parameters of the background in a ``TPFModel``.&quot;];
-  &quot;BackgroundPrior&quot; [URL=&quot;lightkurve.prf.BackgroundPrior.html#lightkurve.prf.BackgroundPrior&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to capture a user's beliefs about the background flux.&quot;];
-  &quot;PriorContainer&quot; -&gt; &quot;BackgroundPrior&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;FixedValuePrior&quot; [URL=&quot;lightkurve.prf.FixedValuePrior.html#lightkurve.prf.FixedValuePrior&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;An improper prior with a negative log probability of 0 at a single fixed&quot;];
-  &quot;Prior&quot; -&gt; &quot;FixedValuePrior&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;FocusParameters&quot; [URL=&quot;lightkurve.prf.FocusParameters.html#lightkurve.prf.FocusParameters&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to hold the parameters of the telescope focus in a ``TPFModel``.&quot;];
-  &quot;FocusPrior&quot; [URL=&quot;lightkurve.prf.FocusPrior.html#lightkurve.prf.FocusPrior&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to capture a user's beliefs about the telescope focus.&quot;];
-  &quot;PriorContainer&quot; -&gt; &quot;FocusPrior&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;KeplerPRF&quot; [URL=&quot;lightkurve.prf.KeplerPRF.html#lightkurve.prf.KeplerPRF&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Kepler's Pixel Response Function as designed by [1]_.&quot;];
-  &quot;LossFunction&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;MotionParameters&quot; [URL=&quot;lightkurve.prf.MotionParameters.html#lightkurve.prf.MotionParameters&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to hold the parameters of the telescope motion in a ``TPFModel``.&quot;];
-  &quot;MotionPrior&quot; [URL=&quot;lightkurve.prf.MotionPrior.html#lightkurve.prf.MotionPrior&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to capture a user's beliefs about the telescope motion.&quot;];
-  &quot;PriorContainer&quot; -&gt; &quot;MotionPrior&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;PRFPhotometry&quot; [URL=&quot;lightkurve.prf.PRFPhotometry.html#lightkurve.prf.PRFPhotometry&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;This class performs PRF Photometry on TPF-like data given a ``TPFModel``.&quot;];
-  &quot;Prior&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;LossFunction&quot; -&gt; &quot;Prior&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;PriorContainer&quot; [fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,tooltip=&quot;Container object to hold parameter priors for PRF photometry.&quot;];
-  &quot;SimpleKeplerPRF&quot; [URL=&quot;lightkurve.prf.SimpleKeplerPRF.html#lightkurve.prf.SimpleKeplerPRF&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Simple model of KeplerPRF.&quot;];
-  &quot;KeplerPRF&quot; -&gt; &quot;SimpleKeplerPRF&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;StarParameters&quot; [URL=&quot;lightkurve.prf.StarParameters.html#lightkurve.prf.StarParameters&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to hold the parameters of a star in a ``TPFModel``.&quot;];
-  &quot;StarPrior&quot; [URL=&quot;lightkurve.prf.StarPrior.html#lightkurve.prf.StarPrior&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to capture a user's beliefs about a star's position and flux.&quot;];
-  &quot;PriorContainer&quot; -&gt; &quot;StarPrior&quot; [arrowsize=0.5,style=&quot;setlinewidth(0.5)&quot;];
-  &quot;TPFModel&quot; [URL=&quot;lightkurve.prf.TPFModel.html#lightkurve.prf.TPFModel&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;A model which describes a single-cadence Kepler image.&quot;];
-  &quot;TPFModelParameters&quot; [URL=&quot;lightkurve.prf.TPFModelParameters.html#lightkurve.prf.TPFModelParameters&quot;,fontname=&quot;Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans&quot;,fontsize=10,height=0.25,shape=box,style=&quot;setlinewidth(0.5)&quot;,target=&quot;_top&quot;,tooltip=&quot;Container class to combine all parameters that parameterize a ``TPFModel``.&quot;];
-}
-</div>
+<img src="../_images/inheritance-06f02cfa7d6f1992268c5c389617ca8e3f08b42f.png" alt="Inheritance diagram of lightkurve.prf.tpfmodel.BackgroundParameters, lightkurve.prf.tpfmodel.BackgroundPrior, lightkurve.prf.tpfmodel.FixedValuePrior, lightkurve.prf.tpfmodel.FocusParameters, lightkurve.prf.tpfmodel.FocusPrior, lightkurve.prf.prfmodel.KeplerPRF, lightkurve.prf.tpfmodel.MotionParameters, lightkurve.prf.tpfmodel.MotionPrior, lightkurve.prf.tpfmodel.PRFPhotometry, lightkurve.prf.prfmodel.SimpleKeplerPRF, lightkurve.prf.tpfmodel.StarParameters, lightkurve.prf.tpfmodel.StarPrior, lightkurve.prf.tpfmodel.TPFModel, lightkurve.prf.tpfmodel.TPFModelParameters" usemap="#inheritance2633681e36" class="inheritance"/>
+<map id="inheritance2633681e36" name="inheritance2633681e36">
+<area shape="rect" id="node1" href="lightkurve.prf.BackgroundParameters.html#lightkurve.prf.BackgroundParameters" target="_top" title="Container class to hold the parameters of the background in a ``TPFModel``." alt="" coords="5,524,179,549"/>
+<area shape="rect" id="node2" href="lightkurve.prf.BackgroundPrior.html#lightkurve.prf.BackgroundPrior" target="_top" title="Container class to capture a user&#39;s beliefs about the background flux." alt="" coords="228,400,357,425"/>
+<area shape="rect" id="node7" href="lightkurve.prf.FocusPrior.html#lightkurve.prf.FocusPrior" target="_top" title="Container class to capture a user&#39;s beliefs about the telescope focus." alt="" coords="248,449,337,475"/>
+<area shape="rect" id="node11" href="lightkurve.prf.MotionPrior.html#lightkurve.prf.MotionPrior" target="_top" title="Container class to capture a user&#39;s beliefs about the telescope motion." alt="" coords="245,499,341,524"/>
+<area shape="rect" id="node15" href="lightkurve.prf.StarPrior.html#lightkurve.prf.StarPrior" target="_top" title="Container class to capture a user&#39;s beliefs about a star&#39;s position and flux." alt="" coords="253,548,332,573"/>
+<area shape="rect" id="node4" href="lightkurve.prf.FixedValuePrior.html#lightkurve.prf.FixedValuePrior" target="_top" title="An improper prior with a negative log probability of 0 at a single fixed" alt="" coords="407,351,529,376"/>
+<area shape="rect" id="node6" href="lightkurve.prf.FocusParameters.html#lightkurve.prf.FocusParameters" target="_top" title="Container class to hold the parameters of the telescope focus in a ``TPFModel``." alt="" coords="25,301,159,327"/>
+<area shape="rect" id="node8" href="lightkurve.prf.KeplerPRF.html#lightkurve.prf.KeplerPRF" target="_top" title="Kepler&#39;s Pixel Response Function as designed by [1]_." alt="" coords="49,252,135,277"/>
+<area shape="rect" id="node13" href="lightkurve.prf.SimpleKeplerPRF.html#lightkurve.prf.SimpleKeplerPRF" target="_top" title="Simple model of KeplerPRF." alt="" coords="227,252,359,277"/>
+<area shape="rect" id="node10" href="lightkurve.prf.MotionParameters.html#lightkurve.prf.MotionParameters" target="_top" title="Container class to hold the parameters of the telescope motion in a ``TPFModel``." alt="" coords="22,203,162,228"/>
+<area shape="rect" id="node12" href="lightkurve.prf.PRFPhotometry.html#lightkurve.prf.PRFPhotometry" target="_top" title="This class performs PRF Photometry on TPF&#45;like data given a ``TPFModel``." alt="" coords="31,153,153,179"/>
+<area shape="rect" id="node14" href="lightkurve.prf.StarParameters.html#lightkurve.prf.StarParameters" target="_top" title="Container class to hold the parameters of a star in a ``TPFModel``." alt="" coords="31,104,153,129"/>
+<area shape="rect" id="node16" href="lightkurve.prf.TPFModel.html#lightkurve.prf.TPFModel" target="_top" title="A model which describes a single&#45;cadence Kepler image." alt="" coords="50,55,134,80"/>
+<area shape="rect" id="node17" href="lightkurve.prf.TPFModelParameters.html#lightkurve.prf.TPFModelParameters" target="_top" title="Container class to combine all parameters that parameterize a ``TPFModel``." alt="" coords="13,5,171,31"/>
+</map></div>
 </div>
 
 
@@ -333,7 +321,7 @@ size=&quot;8.0, 12.0&quot;;
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors
+        &copy; Copyright lightkurve developers and contributors.
 
     </p>
   </div>
@@ -352,24 +340,21 @@ size=&quot;8.0, 12.0&quot;;
 
   
 
-    
-    
-      <script type="text/javascript">
-          var DOCUMENTATION_OPTIONS = {
-              URL_ROOT:'../',
-              VERSION:'1.0b21',
-              LANGUAGE:'None',
-              COLLAPSE_INDEX:false,
-              FILE_SUFFIX:'.html',
-              HAS_SOURCE:  true,
-              SOURCELINK_SUFFIX: '.txt'
-          };
-      </script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0b21',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
