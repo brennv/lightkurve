@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>KeplerLightCurveFile &mdash; lightkurve 1.0b21 documentation</title>
+  <title>KeplerLightCurveFile &mdash; lightkurve 1.0b22 documentation</title>
   
 
   
@@ -61,7 +61,7 @@
             
             
               <div class="version">
-                1.0b21
+                1.0b22
               </div>
             
           
@@ -287,8 +287,8 @@ following meaning:</p>
 <tr class="row-even"><td><a class="reference internal" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.pos_corr1" title="lightkurve.lightcurvefile.KeplerLightCurveFile.pos_corr1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pos_corr1</span></code></a></td>
 <td>Returns the column position correction.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.poss_corr2" title="lightkurve.lightcurvefile.KeplerLightCurveFile.poss_corr2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">poss_corr2</span></code></a></td>
-<td>Returns the row position correction.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">KeplerLightCurveFile.poss_corr2</span></code></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.quarter" title="lightkurve.lightcurvefile.KeplerLightCurveFile.quarter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quarter</span></code></a></td>
 <td>Kepler quarter number.</td>
@@ -315,7 +315,7 @@ following meaning:</p>
 <td>WARNING: THIS FUNCTION IS DEPRECATED AND WILL BE REMOVED VERY SOON.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.from_fits" title="lightkurve.lightcurvefile.KeplerLightCurveFile.from_fits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_fits</span></code></a>(path_or_url,&nbsp;**kwargs)</td>
-<td>Open a Light Curve File using the path or url of a FITS file.</td>
+<td>WARNING: THIS FUNCTION IS DEPRECATED AND WILL BE REMOVED VERY SOON.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.get_lightcurve" title="lightkurve.lightcurvefile.KeplerLightCurveFile.get_lightcurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_lightcurve</span></code></a>(flux_type[,&nbsp;centroid_type])</td>
 <td></td>
@@ -387,12 +387,6 @@ following meaning:</p>
 <dt id="lightkurve.lightcurvefile.KeplerLightCurveFile.pos_corr1">
 <code class="descname">pos_corr1</code><a class="headerlink" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.pos_corr1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the column position correction.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lightkurve.lightcurvefile.KeplerLightCurveFile.poss_corr2">
-<code class="descname">poss_corr2</code><a class="headerlink" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.poss_corr2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the row position correction.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -494,7 +488,7 @@ following meaning:</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>lcf</strong> <span class="classifier-delimiter">:</span> <span class="classifier">KeplerLightCurveFile object or list of KeplerLightCurveFile objects</span></dt>
+<dt><strong>lcf</strong> <span class="classifier-delimiter">:</span> <span class="classifier">KeplerLightCurveFile or LightCurveFileCollection</span></dt>
 <dd></dd>
 </dl>
 </td>
@@ -506,33 +500,8 @@ following meaning:</p>
 <dl class="classmethod">
 <dt id="lightkurve.lightcurvefile.KeplerLightCurveFile.from_fits">
 <em class="property">classmethod </em><code class="descname">from_fits</code><span class="sig-paren">(</span><em>path_or_url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#lightkurve.lightcurvefile.KeplerLightCurveFile.from_fits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open a Light Curve File using the path or url of a FITS file.</p>
-<p>This is identical to opening a Light Curve File via the constructor.
-This method was added because many tutorials use the <cite>from_archive</cite>
-method, therefore users may expect a <cite>from_fits</cite> equivalent.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>path_or_url</strong> <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
-<dd><p class="first last">Path or URL of a FITS file.</p>
-</dd>
-<dt><strong>**kwargs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dict</span></dt>
-<dd><p class="first last">Keyword arguments that will be passed to the constructor.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>tpf</strong> <span class="classifier-delimiter">:</span> <span class="classifier">LightCurveFile object</span></dt>
-<dd><p class="first last">The loaded light curve file.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
+<dd><p>WARNING: THIS FUNCTION IS DEPRECATED AND WILL BE REMOVED VERY SOON.</p>
+<p>Please use <cite>lightkurve.open()</cite> instead.</p>
 </dd></dl>
 
 <dl class="method">
@@ -619,7 +588,7 @@ method, therefore users may expect a <cite>from_fits</cite> equivalent.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0b21',
+            VERSION:'1.0b22',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

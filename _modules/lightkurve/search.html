@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lightkurve.search &mdash; lightkurve 1.0b21 documentation</title>
+  <title>lightkurve.search &mdash; lightkurve 1.0b22 documentation</title>
   
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0b21
+                1.0b22
               </div>
             
           
@@ -172,23 +172,23 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
-<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="k">import</span> <span class="n">unique</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">Table</span><span class="p">,</span> <span class="n">Row</span>
+<span class="kn">from</span> <span class="nn">astropy.table</span> <span class="k">import</span> <span class="n">join</span><span class="p">,</span> <span class="n">Table</span><span class="p">,</span> <span class="n">Row</span>
 <span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="k">import</span> <span class="n">SkyCoord</span>
-<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="k">import</span> <span class="n">ascii</span>
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="k">import</span> <span class="n">ascii</span><span class="p">,</span> <span class="n">fits</span>
 <span class="kn">from</span> <span class="nn">astropy</span> <span class="k">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
 
 <span class="kn">from</span> <span class="nn">astroquery.mast</span> <span class="k">import</span> <span class="n">Observations</span>
 <span class="kn">from</span> <span class="nn">astroquery.exceptions</span> <span class="k">import</span> <span class="n">ResolverError</span>
 
-<span class="kn">from</span> <span class="nn">.lightcurvefile</span> <span class="k">import</span> <span class="n">KeplerLightCurveFile</span>
-<span class="kn">from</span> <span class="nn">.targetpixelfile</span> <span class="k">import</span> <span class="n">KeplerTargetPixelFile</span>
+<span class="kn">from</span> <span class="nn">.lightcurvefile</span> <span class="k">import</span> <span class="n">KeplerLightCurveFile</span><span class="p">,</span> <span class="n">TessLightCurveFile</span>
+<span class="kn">from</span> <span class="nn">.targetpixelfile</span> <span class="k">import</span> <span class="n">KeplerTargetPixelFile</span><span class="p">,</span> <span class="n">TessTargetPixelFile</span>
 <span class="kn">from</span> <span class="nn">.collections</span> <span class="k">import</span> <span class="n">TargetPixelFileCollection</span><span class="p">,</span> <span class="n">LightCurveFileCollection</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">suppress_stdout</span><span class="p">,</span> <span class="n">LightkurveWarning</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">PACKAGEDIR</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;search_targetpixelfile&#39;</span><span class="p">,</span> <span class="s1">&#39;search_lightcurvefile&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;search_targetpixelfile&#39;</span><span class="p">,</span> <span class="s1">&#39;search_lightcurvefile&#39;</span><span class="p">,</span> <span class="s1">&#39;open&#39;</span><span class="p">]</span>
 
 
 <span class="k">class</span> <span class="nc">SearchError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -297,10 +297,11 @@
                           <span class="n">LightkurveWarning</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Warning: </span><span class="si">{}</span><span class="s1"> files available to download. &#39;</span>
-                        <span class="s1">&#39;Only the first file has been downloaded. &#39;</span>
-                        <span class="s1">&#39;Please use `download_all()` or specify a campaign, quarter, or &#39;</span>
-                        <span class="s1">&#39;cadence to limit your search.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)))</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Warning: </span><span class="si">{}</span><span class="s1"> files available to download. &#39;</span>
+                          <span class="s1">&#39;Only the first file has been downloaded. &#39;</span>
+                          <span class="s1">&#39;Please use `download_all()` or specify a campaign, quarter, or &#39;</span>
+                          <span class="s1">&#39;cadence to limit your search.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)),</span>
+                          <span class="n">LightkurveWarning</span><span class="p">)</span>
 
         <span class="c1"># Make sure astroquery uses the same level of verbosity</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;astropy&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log</span><span class="o">.</span><span class="n">getEffectiveLevel</span><span class="p">())</span>
@@ -808,6 +809,65 @@
     <span class="k">if</span> <span class="n">limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">products</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">limit</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">products</span>
+
+
+<div class="viewcode-block" id="open"><a class="viewcode-back" href="../../api/lightkurve.search.open.html#lightkurve.search.open">[docs]</a><span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="n">path_or_url</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Opens a Kepler or TESS data product.</span>
+
+<span class="sd">    This function will automatically detect the type of the data product,</span>
+<span class="sd">    and return the appropriate object. File types currently supported are::</span>
+
+<span class="sd">        * `KeplerTargetPixelFile` (typical suffix &quot;-targ.fits.gz&quot;);</span>
+<span class="sd">        * `KeplerLightCurveFile` (typical suffix &quot;llc.fits&quot;);</span>
+<span class="sd">        * `TessTargetPixelFile` (typical suffix &quot;_tp.fits&quot;);</span>
+<span class="sd">        * `TessLightCurveFile` (typical suffix &quot;_lc.fits&quot;).</span>
+
+<span class="sd">    The function will detect the file type by looking at both the TELESCOP and</span>
+<span class="sd">    CREATOR keywords in the first extension of the FITS file.</span>
+<span class="sd">    If the file is not recognized as a Kepler or TESS data product,</span>
+<span class="sd">    a `ValueError` is raised.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    path_or_url : str</span>
+<span class="sd">        Path or URL of a FITS file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    data : a subclass of :class:`TargetPixelFile` or :class:`LightCurveFile`,</span>
+<span class="sd">        depending on the detected file type.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError : raised if the data product is not recognized as a Kepler or</span>
+<span class="sd">        TESS product.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    To open a target pixel file using its path or URL, simply use:</span>
+
+<span class="sd">        &gt;&gt;&gt; tpf = open(&quot;mytpf.fits&quot;)  # doctest: +SKIP</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hdulist</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path_or_url</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># use `telescop` keyword to determine mission</span>
+        <span class="c1"># and `creator` to determine tpf or lc</span>
+        <span class="n">telescop</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;telescop&#39;</span><span class="p">]</span>
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">hdulist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;creator&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">telescop</span> <span class="o">==</span> <span class="s1">&#39;Kepler&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;TargetPixel&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">KeplerTargetPixelFile</span><span class="p">(</span><span class="n">path_or_url</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s1">&#39;Flux&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">KeplerLightCurveFile</span><span class="p">(</span><span class="n">path_or_url</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">telescop</span> <span class="o">==</span> <span class="s1">&#39;TESS&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;TargetPixel&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">TessTargetPixelFile</span><span class="p">(</span><span class="n">path_or_url</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s1">&#39;Flux&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">TessLightCurveFile</span><span class="p">(</span><span class="n">path_or_url</span><span class="p">)</span>
+    <span class="c1"># if these keywords don&#39;t exist, raise `ValueError`</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Given fits file not recognized as Kepler or TESS observation.&#39;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -842,7 +902,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0b21',
+            VERSION:'1.0b22',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
