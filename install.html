@@ -97,7 +97,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#installing-the-development-version">Installing the development version</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#building-documentation">Building documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API documentation</a></li>
@@ -265,40 +264,6 @@ $ pip install -e .
 <p>This is recommended for anyone who wants to edit the source code.
 Please see our guide on <a class="reference internal" href="contributing.html#contributing"><span class="std std-ref">contributing to lightkurve</span></a>
 for additional instructions.</p>
-</div>
-<div class="section" id="building-documentation">
-<h2>Building documentation<a class="headerlink" href="#building-documentation" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Building the documentation is not necessary unless you are
-writing new documentation or do not have internet access, because the
-latest version of the documentation is available online at
-<a class="reference external" href="https://docs.lightkurve.org/">docs.lightkurve.org</a> .</p>
-</div>
-<p>Building the <em>lightkurve</em> documentation requires a few extra packages:</p>
-<ul class="simple">
-<li>sphinx</li>
-<li>sphinx-automodapi</li>
-<li>nbsphinx</li>
-<li><a class="reference external" href="https://github.com/numpy/numpydoc">numpydoc</a></li>
-</ul>
-<p>These packages can be installed using <cite>conda</cite> or <cite>pip</cite>.</p>
-<p>To build the documentation in HTML format, execute:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd docs
-$ make html
-</pre></div>
-</div>
-<p>This will save the documentation website in the <code class="docutils literal notranslate"><span class="pre">../../lightkurve-docs</span></code> directory
-on your system.  The notebook-based tutorials will not be recompiled by default
-because they take some time to build.  To recompile the notebooks, type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">notebooks</span>
-</pre></div>
-</div>
-<p>Finally, if you have write permission to <em>lightkurve</em>’s GitHub repository,
-you can upload the documentation to the web server using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">upload</span>
-</pre></div>
-</div>
 </div>
 </div>
 

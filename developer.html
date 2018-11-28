@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing and reporting issues</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Developer documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#coding-and-documentation-standards">Coding and documentation standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-documentation">Building documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#release-procedure">Release procedure</a></li>
 </ul>
 </li>
@@ -201,6 +202,43 @@ This page provides guidelines for package developers and maintainers.</p>
 <p>Lightkurve adopts AstroPy’s coding guidelines and standards,
 as documented in <a class="reference external" href="http://docs.astropy.org/en/stable/index.html#developer-documentation">AstroPy’s Development Documentation</a>.</p>
 </div>
+<div class="section" id="building-documentation">
+<h2>Building documentation<a class="headerlink" href="#building-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Building the documentation is not necessary unless you are
+writing new documentation or do not have internet access, because the
+latest version of the documentation is available online at
+<a class="reference external" href="https://docs.lightkurve.org/">docs.lightkurve.org</a> .</p>
+</div>
+<p>Building the <em>lightkurve</em> documentation requires a few extra packages:</p>
+<ul class="simple">
+<li>sphinx</li>
+<li>sphinx-automodapi</li>
+<li>nbsphinx</li>
+<li>ghp-import</li>
+<li>graphviz</li>
+<li><a class="reference external" href="https://github.com/numpy/numpydoc">numpydoc</a></li>
+</ul>
+<p>These packages can be installed using <cite>conda</cite> or <cite>pip</cite>.</p>
+<p>To build the documentation in HTML format, execute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd docs
+$ make clean
+$ make html
+</pre></div>
+</div>
+<p>This will save the documentation website in the <code class="docutils literal notranslate"><span class="pre">../../lightkurve-docs</span></code> directory
+on your system.  The notebook-based tutorials will not be recompiled by default
+because they take some time to build.  To recompile the notebooks, type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">notebooks</span>
+</pre></div>
+</div>
+<p>Finally, if you have write permission to <em>lightkurve</em>’s GitHub repository,
+you can upload the documentation to the web server using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">upload</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="release-procedure">
 <h2>Release procedure<a class="headerlink" href="#release-procedure" title="Permalink to this headline">¶</a></h2>
 <p>The procedure to release a new version of Lightkurve requires a number
@@ -214,16 +252,7 @@ of manual steps:</p>
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
-<li>Verify that the docs and all tutorial notebooks can be compiled without failure, and upload them to the webserver:</li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> docs
-$ make clean
-$ make notebooks
-$ make html
-$ make upload
-</pre></div>
-</div>
-<ol class="arabic simple" start="5">
+<li>Verify that the docs and all tutorial notebooks can be compiled without failure (see <em>Building documentation</em> above), and upload them to the webserver.</li>
 <li>Make a new release branch in GitHub using the <cite>Draft a new release button</cite> at <a class="reference external" href="https://github.com/KeplerGO/lightkurve/releases">https://github.com/KeplerGO/lightkurve/releases</a>.</li>
 <li>Create and upload the new package to PyPI:</li>
 </ol>
@@ -231,13 +260,13 @@ $ make upload
 </pre></div>
 </div>
 <ol class="arabic simple" start="7">
-<li>Increment the version number on the <a class="reference external" href="https://github.com/conda-forge/lightkurve-feedstock">lightkurve conda feedstock</a>.  Specifically you will need to navigate to the <code class="code docutils literal notranslate"><span class="pre">meta.yaml</span></code> file in the <code class="code docutils literal notranslate"><span class="pre">recipe</span></code> directory:</li>
+<li>Increment the version number on the <a class="reference external" href="https://github.com/conda-forge/lightkurve-feedstock">lightkurve conda feedstock</a>.  Navigate to the <code class="code docutils literal notranslate"><span class="pre">meta.yaml</span></code> file in the <code class="code docutils literal notranslate"><span class="pre">recipe</span></code> directory and change two lines:</li>
 </ol>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>{% set version = &quot;1.0b20&quot; %}
 {% set sha256 = &quot;b65f556362b64d9fcc8aa4b0e89991c2b8f7fc059dfa22269b0877a8b758b255&quot; %}
 </pre></div>
 </div>
-<p>You need to replace the version and sha256 values.  You can retrieve the sha256 value from the “Download files” section of <a class="reference external" href="https://pypi.org/project/lightkurve/">the lightkurve PyPI</a>.  Submit your update as a Pull Request, which offers a checklist to guide programmatic spot-checking of your code.</p>
+<p>Replace the <cite>version</cite> and <cite>sha256</cite> values with the most recent release info in <a class="reference external" href="https://pypi.org/project/lightkurve/">the lightkurve PyPI</a>.  Submit your update as a Pull Request, which offers a checklist to guide programmatic spot-checking of your code.</p>
 <ol class="arabic simple" start="8">
 <li>Edit <cite>lightkurve/version.py</cite> to contain the next version number with suffix <cite>.dev</cite>.</li>
 </ol>
