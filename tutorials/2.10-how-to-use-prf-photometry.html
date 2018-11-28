@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>How to perform PRF photometry? &mdash; lightkurve 1.0b22 documentation</title>
+  <title>How to perform PRF photometry? &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="How to cut out Target Pixel Files from Kepler Superstamps or TESS FFIs?" href="cutting-out-tpfs-from-tess-ffis.html" />
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -383,11 +384,11 @@ overlap, aperture photometry will return the sum of the flux of all
 stars. Separating their signals requires additional assumptions. 2. When
 the telescope experience motion or focus changes, the fraction of the
 flux of a star captured by the pre-defined aperture mask will change.
-This imposes systematics on the data which need to be removed (e.g.
-using the CBV or SFF techniques). 3. It may be difficult to separate a
-background signal from the lightcurve of a star. In particular, this is
-a concern when time-varying background signals are present, such as the
-so-called “rolling bands” in Kepler.</p>
+This imposes systematics on the data which need to be removed
+(e.g.&nbsp;using the CBV or SFF techniques). 3. It may be difficult to
+separate a background signal from the lightcurve of a star. In
+particular, this is a concern when time-varying background signals are
+present, such as the so-called “rolling bands” in Kepler.</p>
 <p>An alternative to aperture photometry which addresses the above
 limitations is called called <em>Point Response Function (PRF) model
 fitting photometry</em>, also known as <em>Point Spread Function (PSF) fitting
@@ -618,7 +619,7 @@ Point Response Function.</li>
 <li><code class="docutils literal notranslate"><span class="pre">model.fit_background</span></code>, <code class="docutils literal notranslate"><span class="pre">model.fit_focus</span></code>, and
 <code class="docutils literal notranslate"><span class="pre">model.fit_motion</span></code> are booleans which indicate whether or not the
 background, focus, and motion parameters should be considered free
-parameters, i.e. whether or not our beliefs should assumed to be
+parameters, i.e.&nbsp;whether or not our beliefs should assumed to be
 perfect.</li>
 </ul>
 <p>The parameters of each of these components are prior distributions.</p>
@@ -1097,7 +1098,7 @@ issue or pull request on GitHub!</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -1116,21 +1117,14 @@ issue or pull request on GitHub!</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

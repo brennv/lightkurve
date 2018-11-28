@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Developer documentation &mdash; lightkurve 1.0b22 documentation</title>
+  <title>Developer documentation &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Citing and acknowledging lightkurve" href="citing.html" />
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -206,29 +207,38 @@ as documented in <a class="reference external" href="http://docs.astropy.org/en/
 of manual steps:</p>
 <ol class="arabic simple">
 <li>Add any new contributors to <cite>AUTHORS.rst</cite>.</li>
-<li>Change the version number in <cite>lightkurve/version.py</cite>. Lightkurve follows a <a class="reference external" href="https://semver.org">semantic versioning scheme</a>.</li>
+<li>Remove the suffix <cite>.dev</cite> from the version number in <cite>lightkurve/version.py</cite>. Note that Lightkurve follows a <a class="reference external" href="https://semver.org">semantic versioning scheme</a>.</li>
 <li>Verify that all unit tests pass:</li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pytest --remote-data
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
+<li>Verify that the docs and all tutorial notebooks can be compiled without failure, and upload them to the webserver:</li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> docs
+$ make clean
+$ make notebooks
+$ make html
+$ make upload
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
 <li>Make a new release branch in GitHub using the <cite>Draft a new release button</cite> at <a class="reference external" href="https://github.com/KeplerGO/lightkurve/releases">https://github.com/KeplerGO/lightkurve/releases</a>.</li>
 <li>Create and upload the new package to PyPI:</li>
 </ol>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python setup.py release
 </pre></div>
 </div>
-<ol class="arabic simple" start="6">
-<li>Update the online docs:</li>
+<ol class="arabic simple" start="7">
+<li>Increment the version number on the <a class="reference external" href="https://github.com/conda-forge/lightkurve-feedstock">lightkurve conda feedstock</a>.  Specifically you will need to navigate to the <code class="code docutils literal notranslate"><span class="pre">meta.yaml</span></code> file in the <code class="code docutils literal notranslate"><span class="pre">recipe</span></code> directory:</li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> docs
-$ make clean
-$ make html
-$ make upload
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>{% set version = &quot;1.0b20&quot; %}
+{% set sha256 = &quot;b65f556362b64d9fcc8aa4b0e89991c2b8f7fc059dfa22269b0877a8b758b255&quot; %}
 </pre></div>
 </div>
-<ol class="arabic simple" start="7">
+<p>You need to replace the version and sha256 values.  You can retrieve the sha256 value from the “Download files” section of <a class="reference external" href="https://pypi.org/project/lightkurve/">the lightkurve PyPI</a>.  Submit your update as a Pull Request, which offers a checklist to guide programmatic spot-checking of your code.</p>
+<ol class="arabic simple" start="8">
 <li>Edit <cite>lightkurve/version.py</cite> to contain the next version number with suffix <cite>.dev</cite>.</li>
 </ol>
 </div>
@@ -254,7 +264,7 @@ $ make upload
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -273,21 +283,14 @@ $ make upload
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>TessQualityFlags &mdash; lightkurve 1.0b22 documentation</title>
+  <title>TessQualityFlags &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Introduction to lightkurve" href="../tutorials/section1.html" />
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -100,6 +101,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="utils.html">Utility functions</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="utils.html#functions">Functions</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="utils.html#classes">Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="lightkurve.utils.LightkurveWarning.html">LightkurveWarning</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lightkurve.utils.KeplerQualityFlags.html">KeplerQualityFlags</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">TessQualityFlags</a></li>
 </ul>
@@ -239,41 +241,59 @@ as documented in the TESS Data Products Description Document (Ref. [1], Table 26
 <tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.Argabrightening" title="lightkurve.utils.TessQualityFlags.Argabrightening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Argabrightening</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.AttitudeTweak" title="lightkurve.utils.TessQualityFlags.AttitudeTweak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AttitudeTweak</span></code></a></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.ArgabrighteningOnCCD</span></code></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.CoarsePoint" title="lightkurve.utils.TessQualityFlags.CoarsePoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CoarsePoint</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.AttitudeTweak" title="lightkurve.utils.TessQualityFlags.AttitudeTweak"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AttitudeTweak</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.CollateralCosmic" title="lightkurve.utils.TessQualityFlags.CollateralCosmic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CollateralCosmic</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.CoarsePoint" title="lightkurve.utils.TessQualityFlags.CoarsePoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CoarsePoint</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.DEFAULT_BITMASK" title="lightkurve.utils.TessQualityFlags.DEFAULT_BITMASK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_BITMASK</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.CollateralCosmic" title="lightkurve.utils.TessQualityFlags.CollateralCosmic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CollateralCosmic</span></code></a></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.DEFAULT_BITMASK" title="lightkurve.utils.TessQualityFlags.DEFAULT_BITMASK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DEFAULT_BITMASK</span></code></a></td>
 <td>DEFAULT bitmask identifies all cadences which are definitely useless.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.Desat" title="lightkurve.utils.TessQualityFlags.Desat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Desat</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.Desat" title="lightkurve.utils.TessQualityFlags.Desat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Desat</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.Discontinuity" title="lightkurve.utils.TessQualityFlags.Discontinuity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Discontinuity</span></code></a></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.DetectorAnomaly</span></code></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.EarthPoint" title="lightkurve.utils.TessQualityFlags.EarthPoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EarthPoint</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.EarthPoint" title="lightkurve.utils.TessQualityFlags.EarthPoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EarthPoint</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.HARDEST_BITMASK" title="lightkurve.utils.TessQualityFlags.HARDEST_BITMASK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HARDEST_BITMASK</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.HARDEST_BITMASK" title="lightkurve.utils.TessQualityFlags.HARDEST_BITMASK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HARDEST_BITMASK</span></code></a></td>
 <td>HARDEST bitmask identifies cadences with any flag set.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.HARD_BITMASK" title="lightkurve.utils.TessQualityFlags.HARD_BITMASK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HARD_BITMASK</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.HARD_BITMASK" title="lightkurve.utils.TessQualityFlags.HARD_BITMASK"><code class="xref py py-obj docutils literal notranslate"><span class="pre">HARD_BITMASK</span></code></a></td>
 <td>HARD bitmask is conservative and may identify cadences which are useful.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.ImpulsiveOutlier" title="lightkurve.utils.TessQualityFlags.ImpulsiveOutlier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImpulsiveOutlier</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.ImpulsiveOutlier" title="lightkurve.utils.TessQualityFlags.ImpulsiveOutlier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImpulsiveOutlier</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.ManualExclude" title="lightkurve.utils.TessQualityFlags.ManualExclude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManualExclude</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.ManualExclude" title="lightkurve.utils.TessQualityFlags.ManualExclude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ManualExclude</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.OPTIONS" title="lightkurve.utils.TessQualityFlags.OPTIONS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OPTIONS</span></code></a></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.NoData</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.NoFinePoint</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.OPTIONS" title="lightkurve.utils.TessQualityFlags.OPTIONS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OPTIONS</span></code></a></td>
 <td>Dictionary which provides friendly names for the various bitmasks.</td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.PossibleThrusterFiring</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.RollingBandInAperture</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.RollingBandInMask</span></code></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.STRINGS" title="lightkurve.utils.TessQualityFlags.STRINGS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">STRINGS</span></code></a></td>
 <td>Pretty string descriptions for each flag</td>
@@ -281,7 +301,13 @@ as documented in the TESS Data Products Description Document (Ref. [1], Table 26
 <tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.SafeMode" title="lightkurve.utils.TessQualityFlags.SafeMode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SafeMode</span></code></a></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.Straylight" title="lightkurve.utils.TessQualityFlags.Straylight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Straylight</span></code></a></td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.SensitivityDropout</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.ThrusterFiring</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">TessQualityFlags.ZeroCrossing</span></code></td>
 <td></td>
 </tr>
 </tbody>
@@ -293,10 +319,7 @@ as documented in the TESS Data Products Description Document (Ref. [1], Table 26
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.create_quality_mask" title="lightkurve.utils.TessQualityFlags.create_quality_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_quality_mask</span></code></a>(quality_array[,&nbsp;bitmask])</td>
-<td>Returns a boolean array which flags good cadences given a bitmask.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.decode" title="lightkurve.utils.TessQualityFlags.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(quality)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.TessQualityFlags.decode" title="lightkurve.utils.TessQualityFlags.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(quality)</td>
 <td>Converts a Kepler QUALITY value into a list of human-readable strings.</td>
 </tr>
 </tbody>
@@ -336,11 +359,6 @@ as documented in the TESS Data Products Description Document (Ref. [1], Table 26
 <dl class="attribute">
 <dt id="lightkurve.utils.TessQualityFlags.Desat">
 <code class="descname">Desat</code><em class="property"> = 32</em><a class="headerlink" href="#lightkurve.utils.TessQualityFlags.Desat" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lightkurve.utils.TessQualityFlags.Discontinuity">
-<code class="descname">Discontinuity</code><em class="property"> = 256</em><a class="headerlink" href="#lightkurve.utils.TessQualityFlags.Discontinuity" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -387,44 +405,7 @@ as documented in the TESS Data Products Description Document (Ref. [1], Table 26
 <code class="descname">SafeMode</code><em class="property"> = 2</em><a class="headerlink" href="#lightkurve.utils.TessQualityFlags.SafeMode" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="attribute">
-<dt id="lightkurve.utils.TessQualityFlags.Straylight">
-<code class="descname">Straylight</code><em class="property"> = 2048</em><a class="headerlink" href="#lightkurve.utils.TessQualityFlags.Straylight" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <p class="rubric">Methods Documentation</p>
-<dl class="classmethod">
-<dt id="lightkurve.utils.TessQualityFlags.create_quality_mask">
-<em class="property">classmethod </em><code class="descname">create_quality_mask</code><span class="sig-paren">(</span><em>quality_array</em>, <em>bitmask=None</em><span class="sig-paren">)</span><a class="headerlink" href="#lightkurve.utils.TessQualityFlags.create_quality_mask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a boolean array which flags good cadences given a bitmask.</p>
-<p>This method is used by the constructors of <code class="xref py py-class docutils literal notranslate"><span class="pre">KeplerTargetPixelFile</span></code>
-and <code class="xref py py-class docutils literal notranslate"><span class="pre">KeplerLightCurveFile</span></code> to initialize their <cite>quality_mask</cite>
-class attribute which is used to ignore bad-quality data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>quality_array</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of int</span></dt>
-<dd><p class="first last">‘QUALITY’ column of a Kepler target pixel or lightcurve file.</p>
-</dd>
-<dt><strong>bitmask</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or str</span></dt>
-<dd><p class="first last">Bitmask (int) or one of ‘none’, ‘default’, ‘hard’, or ‘hardest’.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>boolean_mask</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of bool</span></dt>
-<dd><p class="first last">Boolean array in which <cite>True</cite> means the data is of good quality.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <dl class="classmethod">
 <dt id="lightkurve.utils.TessQualityFlags.decode">
 <em class="property">classmethod </em><code class="descname">decode</code><span class="sig-paren">(</span><em>quality</em><span class="sig-paren">)</span><a class="headerlink" href="#lightkurve.utils.TessQualityFlags.decode" title="Permalink to this definition">¶</a></dt>
@@ -479,7 +460,7 @@ quality flags raised.  Returns an empty list if no flags raised.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -498,21 +479,14 @@ quality flags raised.  Returns an empty list if no flags raised.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

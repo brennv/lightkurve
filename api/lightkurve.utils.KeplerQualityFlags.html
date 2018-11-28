@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>KeplerQualityFlags &mdash; lightkurve 1.0b22 documentation</title>
+  <title>KeplerQualityFlags &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,10 +26,11 @@
 
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="TessQualityFlags" href="lightkurve.utils.TessQualityFlags.html" />
-    <link rel="prev" title="running_mean" href="lightkurve.utils.running_mean.html" /> 
+    <link rel="prev" title="LightkurveWarning" href="lightkurve.utils.LightkurveWarning.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -100,6 +101,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="utils.html">Utility functions</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="utils.html#functions">Functions</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="utils.html#classes">Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="lightkurve.utils.LightkurveWarning.html">LightkurveWarning</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">KeplerQualityFlags</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lightkurve.utils.TessQualityFlags.html">TessQualityFlags</a></li>
 </ul>
@@ -317,10 +319,7 @@ as documented in the Kepler Archive Manual (Ref. [1], Table 2.3).</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.KeplerQualityFlags.create_quality_mask" title="lightkurve.utils.KeplerQualityFlags.create_quality_mask"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_quality_mask</span></code></a>(quality_array[,&nbsp;bitmask])</td>
-<td>Returns a boolean array which flags good cadences given a bitmask.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.utils.KeplerQualityFlags.decode" title="lightkurve.utils.KeplerQualityFlags.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(quality)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#lightkurve.utils.KeplerQualityFlags.decode" title="lightkurve.utils.KeplerQualityFlags.decode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">decode</span></code></a>(quality)</td>
 <td>Converts a Kepler QUALITY value into a list of human-readable strings.</td>
 </tr>
 </tbody>
@@ -458,38 +457,6 @@ as documented in the Kepler Archive Manual (Ref. [1], Table 2.3).</p>
 
 <p class="rubric">Methods Documentation</p>
 <dl class="classmethod">
-<dt id="lightkurve.utils.KeplerQualityFlags.create_quality_mask">
-<em class="property">classmethod </em><code class="descname">create_quality_mask</code><span class="sig-paren">(</span><em>quality_array</em>, <em>bitmask=None</em><span class="sig-paren">)</span><a class="headerlink" href="#lightkurve.utils.KeplerQualityFlags.create_quality_mask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a boolean array which flags good cadences given a bitmask.</p>
-<p>This method is used by the constructors of <code class="xref py py-class docutils literal notranslate"><span class="pre">KeplerTargetPixelFile</span></code>
-and <code class="xref py py-class docutils literal notranslate"><span class="pre">KeplerLightCurveFile</span></code> to initialize their <cite>quality_mask</cite>
-class attribute which is used to ignore bad-quality data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>quality_array</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of int</span></dt>
-<dd><p class="first last">‘QUALITY’ column of a Kepler target pixel or lightcurve file.</p>
-</dd>
-<dt><strong>bitmask</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int or str</span></dt>
-<dd><p class="first last">Bitmask (int) or one of ‘none’, ‘default’, ‘hard’, or ‘hardest’.</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>boolean_mask</strong> <span class="classifier-delimiter">:</span> <span class="classifier">array of bool</span></dt>
-<dd><p class="first last">Boolean array in which <cite>True</cite> means the data is of good quality.</p>
-</dd>
-</dl>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="classmethod">
 <dt id="lightkurve.utils.KeplerQualityFlags.decode">
 <em class="property">classmethod </em><code class="descname">decode</code><span class="sig-paren">(</span><em>quality</em><span class="sig-paren">)</span><a class="headerlink" href="#lightkurve.utils.KeplerQualityFlags.decode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a Kepler QUALITY value into a list of human-readable strings.</p>
@@ -534,7 +501,7 @@ quality flags raised.  Returns an empty list if no flags raised.</p>
         <a href="lightkurve.utils.TessQualityFlags.html" class="btn btn-neutral float-right" title="TessQualityFlags" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="lightkurve.utils.running_mean.html" class="btn btn-neutral" title="running_mean" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="lightkurve.utils.LightkurveWarning.html" class="btn btn-neutral" title="LightkurveWarning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -543,7 +510,7 @@ quality flags raised.  Returns an empty list if no flags raised.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -562,21 +529,14 @@ quality flags raised.  Returns an empty list if no flags raised.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

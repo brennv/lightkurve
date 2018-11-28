@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LightCurve classes &mdash; lightkurve 1.0b22 documentation</title>
+  <title>LightCurve classes &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="LightCurve" href="lightkurve.lightcurve.LightCurve.html" />
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -211,7 +212,7 @@
 </style>
 <div class="section" id="module-lightkurve.lightcurve">
 <span id="lightcurve-classes"></span><h1>LightCurve classes<a class="headerlink" href="#module-lightkurve.lightcurve" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-lightkurve.lightcurve"></span><p>Defines LightCurve, KeplerLightCurve, TessLightCurve, etc.</p>
+<span class="target" id="module-lightkurve.lightcurve"></span><p>Defines LightCurve, KeplerLightCurve, and TessLightCurve.</p>
 <div class="section" id="classes">
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="longtable docutils">
@@ -230,19 +231,19 @@
 <td>Defines a light curve class for NASA’s TESS mission.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="lightkurve.lightcurve.FoldedLightCurve.html#lightkurve.lightcurve.FoldedLightCurve" title="lightkurve.lightcurve.FoldedLightCurve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FoldedLightCurve</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Defines a folded lightcurve with different plotting defaults.</td>
+<td>Class to hold a phase-folded lightcurve, i.e.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="class-inheritance-diagram">
 <h2>Class Inheritance Diagram<a class="headerlink" href="#class-inheritance-diagram" title="Permalink to this headline">¶</a></h2>
-<img src="../_images/inheritance-c547a209f573e7119b6c33893c2f658160352bf0.png" alt="Inheritance diagram of lightkurve.lightcurve.LightCurve, lightkurve.lightcurve.KeplerLightCurve, lightkurve.lightcurve.TessLightCurve, lightkurve.lightcurve.FoldedLightCurve" usemap="#inheritancec672026571" class="inheritance"/>
+<div class="graphviz"><img src="../_images/inheritance-e2b87def4b73f94f3e94b3531b716dc11f09adc1.png" alt="Inheritance diagram of lightkurve.lightcurve.LightCurve, lightkurve.lightcurve.KeplerLightCurve, lightkurve.lightcurve.TessLightCurve, lightkurve.lightcurve.FoldedLightCurve" usemap="#inheritancec672026571" class="inheritance graphviz" /></div>
 <map id="inheritancec672026571" name="inheritancec672026571">
-<area shape="rect" id="node1" href="lightkurve.lightcurve.FoldedLightCurve.html#lightkurve.lightcurve.FoldedLightCurve" target="_top" title="Defines a folded lightcurve with different plotting defaults." alt="" coords="145,5,280,31"/>
-<area shape="rect" id="node2" href="lightkurve.lightcurve.LightCurve.html#lightkurve.lightcurve.LightCurve" target="_top" title="Implements a simple class for a generic light curve." alt="" coords="5,55,97,80"/>
-<area shape="rect" id="node3" href="lightkurve.lightcurve.KeplerLightCurve.html#lightkurve.lightcurve.KeplerLightCurve" target="_top" title="Defines a light curve class for NASA&#39;s Kepler and K2 missions." alt="" coords="146,55,279,80"/>
-<area shape="rect" id="node4" href="lightkurve.lightcurve.TessLightCurve.html#lightkurve.lightcurve.TessLightCurve" target="_top" title="Defines a light curve class for NASA&#39;s TESS mission." alt="" coords="153,104,273,129"/>
+<area shape="rect" id="node1" href="lightkurve.lightcurve.FoldedLightCurve.html#lightkurve.lightcurve.FoldedLightCurve" target="_top" title="Class to hold a phase&#45;folded lightcurve, i.e. the output of `LightCurve.fold()`." alt="" coords="140,5,267,31"/>
+<area shape="rect" id="node2" href="lightkurve.lightcurve.LightCurve.html#lightkurve.lightcurve.LightCurve" target="_top" title="Implements a simple class for a generic light curve." alt="" coords="5,55,92,80"/>
+<area shape="rect" id="node3" href="lightkurve.lightcurve.KeplerLightCurve.html#lightkurve.lightcurve.KeplerLightCurve" target="_top" title="Defines a light curve class for NASA&#39;s Kepler and K2 missions." alt="" coords="141,55,266,80"/>
+<area shape="rect" id="node4" href="lightkurve.lightcurve.TessLightCurve.html#lightkurve.lightcurve.TessLightCurve" target="_top" title="Defines a light curve class for NASA&#39;s TESS mission." alt="" coords="145,104,261,129"/>
 </map></div>
 </div>
 
@@ -266,7 +267,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -285,21 +286,14 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

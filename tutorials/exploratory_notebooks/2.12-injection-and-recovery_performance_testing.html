@@ -1,0 +1,1555 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>How to inject and recover artifical signals from lightcurves – performance testing &mdash; lightkurve 1.0b23.dev documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> lightkurve
+          
+
+          
+            
+            <img src="../../_static/lightkurve.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0b23.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../section1.html">Introduction to lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../section2.html">Science with lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../section3.html">Extracting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../section4.html">Systematics correction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About lightkurve</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributing and reporting issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing and acknowledging lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other_software.html">Other software</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">lightkurve</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+      <li>How to inject and recover artifical signals from lightcurves – <em>performance testing</em></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/tutorials/exploratory_notebooks/2.12-injection-and-recovery_performance_testing.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="How-to-inject-and-recover-artifical-signals-from-lightcurves-–-performance-testing">
+<h1>How to inject and recover artifical signals from lightcurves – <em>performance testing</em><a class="headerlink" href="#How-to-inject-and-recover-artifical-signals-from-lightcurves-–-performance-testing" title="Permalink to this headline">¶</a></h1>
+<p>In addition to tools that inject artifical signals into Kepler, K2, and
+TESS lightcurves, <code class="docutils literal notranslate"><span class="pre">lightcurve</span></code> also includes tools to recover signals
+(real or injected). In this notebook, we will recover signals of an
+injected supernova and an injected planet.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">from</span> <span class="nn">lightkurve</span> <span class="k">import</span> <span class="n">KeplerTargetPixelFile</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">lightkurve.injection</span> <span class="k">as</span> <span class="nn">inj</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Fitting-a-Planetary-Transit">
+<h1>Fitting a Planetary Transit<a class="headerlink" href="#Fitting-a-Planetary-Transit" title="Permalink to this headline">¶</a></h1>
+<p>Now let’s try to fit a planetary transit. Let’s download a TPF and
+Kepler lightcurve of a G-type star:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf_star</span> <span class="o">=</span> <span class="n">KeplerTargetPixelFile</span><span class="o">.</span><span class="n">from_archive</span><span class="p">(</span><span class="mi">1867630</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#tpf_star.plot()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_star</span> <span class="o">=</span> <span class="n">tpf_star</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>I am going to normalize this light curve, because we are multiplying in
+a normalized transit lightcurve.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_star</span> <span class="o">=</span> <span class="n">lc_star</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
+<span class="n">lc_star</span> <span class="o">=</span> <span class="n">lc_star</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Now I’m injecting a lightcurve of a Jupiter-sized planet with an orbital
+period of 5 days.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">lightkurve.injection</span> <span class="k">import</span> <span class="n">GaussianDistribution</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">inj</span><span class="o">.</span><span class="n">TransitModel</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_planet</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">rprs</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="mi">133</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="mi">87</span><span class="p">)</span>
+<span class="n">lc_transit</span> <span class="o">=</span> <span class="n">lc_star</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">period_fit</span><span class="p">,</span> <span class="n">rprs_fit</span> <span class="o">=</span> <span class="n">lc_transit</span><span class="o">.</span><span class="n">recover_planet</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.50   0.00
+0.48   0.00
+0.51   0.00
+0.48   0.00
+0.49   0.00
+0.51   0.00
+0.52   0.00
+0.49   0.00
+0.51   0.00
+0.54   0.00
+0.48   0.00
+0.55   0.00
+0.49   0.00
+0.52   0.00
+0.54   0.00
+0.47   0.00
+0.48   0.00
+0.46   0.00
+0.48   0.00
+0.48   0.00
+0.47   0.00
+0.47   0.00
+0.46   0.00
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-10-71575755b974&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>period_fit<span class="ansi-blue-fg">,</span> rprs_fit <span class="ansi-blue-fg">=</span> lc_transit<span class="ansi-blue-fg">.</span>recover_planet<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/GitHub/lightkurve/lightkurve/lightcurve.py</span> in <span class="ansi-cyan-fg">recover_planet</span><span class="ansi-blue-fg">(self, fit_params, method, nwalkers, nsteps, threads)</span>
+<span class="ansi-green-intense-fg ansi-bold">    813</span>
+<span class="ansi-green-intense-fg ansi-bold">    814</span>         return injection.recover_planet(self.time, self.flux, self.flux_err, self.period, self.rprs,
+<span class="ansi-green-fg">--&gt; 815</span><span class="ansi-red-fg">                                     self.T0, self.a, self.inc, self.ecc, self.w, self.limb_dark, self.u, fit_params=fit_params, method=method, nwalkers=nwalkers, nsteps=nsteps, threads=threads)
+</span><span class="ansi-green-intense-fg ansi-bold">    816</span>
+<span class="ansi-green-intense-fg ansi-bold">    817</span>
+
+<span class="ansi-green-fg">~/GitHub/lightkurve/lightkurve/injection.py</span> in <span class="ansi-cyan-fg">recover_planet</span><span class="ansi-blue-fg">(time, flux, flux_err, period, rprs, T0, a, inc, ecc, w, limb_dark, u, fit_params, method, nwalkers, nsteps, threads)</span>
+<span class="ansi-green-intense-fg ansi-bold">    385</span>     <span class="ansi-green-fg">if</span> method <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#39;optimize&#39;</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    386</span>         x0 <span class="ansi-blue-fg">=</span> list<span class="ansi-blue-fg">(</span>create_initial_guess<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>values<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 387</span><span class="ansi-red-fg">         </span>result <span class="ansi-blue-fg">=</span> op<span class="ansi-blue-fg">.</span>minimize<span class="ansi-blue-fg">(</span>neg_ln_posterior<span class="ansi-blue-fg">,</span> x0<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    388</span>
+<span class="ansi-green-intense-fg ansi-bold">    389</span>         results <span class="ansi-blue-fg">=</span> dict<span class="ansi-blue-fg">(</span>zip<span class="ansi-blue-fg">(</span>list<span class="ansi-blue-fg">(</span>create_initial_guess<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> result<span class="ansi-blue-fg">.</span>x<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/_minimize.py</span> in <span class="ansi-cyan-fg">minimize</span><span class="ansi-blue-fg">(fun, x0, args, method, jac, hess, hessp, bounds, constraints, tol, callback, options)</span>
+<span class="ansi-green-intense-fg ansi-bold">    479</span>         <span class="ansi-green-fg">return</span> _minimize_cg<span class="ansi-blue-fg">(</span>fun<span class="ansi-blue-fg">,</span> x0<span class="ansi-blue-fg">,</span> args<span class="ansi-blue-fg">,</span> jac<span class="ansi-blue-fg">,</span> callback<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>options<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    480</span>     <span class="ansi-green-fg">elif</span> meth <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#39;bfgs&#39;</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 481</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> _minimize_bfgs<span class="ansi-blue-fg">(</span>fun<span class="ansi-blue-fg">,</span> x0<span class="ansi-blue-fg">,</span> args<span class="ansi-blue-fg">,</span> jac<span class="ansi-blue-fg">,</span> callback<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>options<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    482</span>     <span class="ansi-green-fg">elif</span> meth <span class="ansi-blue-fg">==</span> <span class="ansi-blue-fg">&#39;newton-cg&#39;</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    483</span>         return _minimize_newtoncg(fun, x0, args, jac, hess, hessp, callback,
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py</span> in <span class="ansi-cyan-fg">_minimize_bfgs</span><span class="ansi-blue-fg">(fun, x0, args, jac, callback, gtol, norm, eps, maxiter, disp, return_all, **unknown_options)</span>
+<span class="ansi-green-intense-fg ansi-bold">    962</span>             alpha_k<span class="ansi-blue-fg">,</span> fc<span class="ansi-blue-fg">,</span> gc<span class="ansi-blue-fg">,</span> old_fval<span class="ansi-blue-fg">,</span> old_old_fval<span class="ansi-blue-fg">,</span> gfkp1 <span class="ansi-blue-fg">=</span><span class="ansi-red-fg"> </span><span class="ansi-red-fg">\</span>
+<span class="ansi-green-intense-fg ansi-bold">    963</span>                      _line_search_wolfe12(f, myfprime, xk, pk, gfk,
+<span class="ansi-green-fg">--&gt; 964</span><span class="ansi-red-fg">                                           old_fval, old_old_fval, amin=1e-100, amax=1e100)
+</span><span class="ansi-green-intense-fg ansi-bold">    965</span>         <span class="ansi-green-fg">except</span> _LineSearchError<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    966</span>             <span class="ansi-red-fg"># Line search failed to find a better solution.</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py</span> in <span class="ansi-cyan-fg">_line_search_wolfe12</span><span class="ansi-blue-fg">(f, fprime, xk, pk, gfk, old_fval, old_old_fval, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">    781</span>     ret = line_search_wolfe1(f, fprime, xk, pk, gfk,
+<span class="ansi-green-intense-fg ansi-bold">    782</span>                              old_fval<span class="ansi-blue-fg">,</span> old_old_fval<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 783</span><span class="ansi-red-fg">                              **kwargs)
+</span><span class="ansi-green-intense-fg ansi-bold">    784</span>
+<span class="ansi-green-intense-fg ansi-bold">    785</span>     <span class="ansi-green-fg">if</span> ret<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span> <span class="ansi-green-fg">and</span> extra_condition <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/linesearch.py</span> in <span class="ansi-cyan-fg">line_search_wolfe1</span><span class="ansi-blue-fg">(f, fprime, xk, pk, gfk, old_fval, old_old_fval, args, c1, c2, amax, amin, xtol)</span>
+<span class="ansi-green-intense-fg ansi-bold">     99</span>     stp, fval, old_fval = scalar_search_wolfe1(
+<span class="ansi-green-intense-fg ansi-bold">    100</span>             phi<span class="ansi-blue-fg">,</span> derphi<span class="ansi-blue-fg">,</span> old_fval<span class="ansi-blue-fg">,</span> old_old_fval<span class="ansi-blue-fg">,</span> derphi0<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">--&gt; 101</span><span class="ansi-red-fg">             c1=c1, c2=c2, amax=amax, amin=amin, xtol=xtol)
+</span><span class="ansi-green-intense-fg ansi-bold">    102</span>
+<span class="ansi-green-intense-fg ansi-bold">    103</span>     <span class="ansi-green-fg">return</span> stp<span class="ansi-blue-fg">,</span> fc<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> gc<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> fval<span class="ansi-blue-fg">,</span> old_fval<span class="ansi-blue-fg">,</span> gval<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/linesearch.py</span> in <span class="ansi-cyan-fg">scalar_search_wolfe1</span><span class="ansi-blue-fg">(phi, derphi, phi0, old_phi0, derphi0, c1, c2, amax, amin, xtol)</span>
+<span class="ansi-green-intense-fg ansi-bold">    173</span>             alpha1 <span class="ansi-blue-fg">=</span> stp
+<span class="ansi-green-intense-fg ansi-bold">    174</span>             phi1 <span class="ansi-blue-fg">=</span> phi<span class="ansi-blue-fg">(</span>stp<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 175</span><span class="ansi-red-fg">             </span>derphi1 <span class="ansi-blue-fg">=</span> derphi<span class="ansi-blue-fg">(</span>stp<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    176</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    177</span>             <span class="ansi-green-fg">break</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/linesearch.py</span> in <span class="ansi-cyan-fg">derphi</span><span class="ansi-blue-fg">(s)</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>
+<span class="ansi-green-intense-fg ansi-bold">     89</span>     <span class="ansi-green-fg">def</span> derphi<span class="ansi-blue-fg">(</span>s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 90</span><span class="ansi-red-fg">         </span>gval<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> fprime<span class="ansi-blue-fg">(</span>xk <span class="ansi-blue-fg">+</span> s<span class="ansi-blue-fg">*</span>pk<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>newargs<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     91</span>         <span class="ansi-green-fg">if</span> gradient<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     92</span>             gc<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py</span> in <span class="ansi-cyan-fg">function_wrapper</span><span class="ansi-blue-fg">(*wrapper_args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    290</span>     <span class="ansi-green-fg">def</span> function_wrapper<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>wrapper_args<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    291</span>         ncalls<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-fg">--&gt; 292</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> function<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span>wrapper_args <span class="ansi-blue-fg">+</span> args<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    293</span>
+<span class="ansi-green-intense-fg ansi-bold">    294</span>     <span class="ansi-green-fg">return</span> ncalls<span class="ansi-blue-fg">,</span> function_wrapper
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py</span> in <span class="ansi-cyan-fg">approx_fprime</span><span class="ansi-blue-fg">(xk, f, epsilon, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    701</span>
+<span class="ansi-green-intense-fg ansi-bold">    702</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">--&gt; 703</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">return</span> _approx_fprime_helper<span class="ansi-blue-fg">(</span>xk<span class="ansi-blue-fg">,</span> f<span class="ansi-blue-fg">,</span> epsilon<span class="ansi-blue-fg">,</span> args<span class="ansi-blue-fg">=</span>args<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    704</span>
+<span class="ansi-green-intense-fg ansi-bold">    705</span>
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py</span> in <span class="ansi-cyan-fg">_approx_fprime_helper</span><span class="ansi-blue-fg">(xk, f, epsilon, args, f0)</span>
+<span class="ansi-green-intense-fg ansi-bold">    641</span>         ei<span class="ansi-blue-fg">[</span>k<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">1.0</span>
+<span class="ansi-green-intense-fg ansi-bold">    642</span>         d <span class="ansi-blue-fg">=</span> epsilon <span class="ansi-blue-fg">*</span> ei
+<span class="ansi-green-fg">--&gt; 643</span><span class="ansi-red-fg">         </span>grad<span class="ansi-blue-fg">[</span>k<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span>f<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>xk <span class="ansi-blue-fg">+</span> d<span class="ansi-blue-fg">,</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span> args<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> f0<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">/</span> d<span class="ansi-blue-fg">[</span>k<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    644</span>         ei<span class="ansi-blue-fg">[</span>k<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.0</span>
+<span class="ansi-green-intense-fg ansi-bold">    645</span>     <span class="ansi-green-fg">return</span> grad
+
+<span class="ansi-green-fg">~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py</span> in <span class="ansi-cyan-fg">function_wrapper</span><span class="ansi-blue-fg">(*wrapper_args)</span>
+<span class="ansi-green-intense-fg ansi-bold">    290</span>     <span class="ansi-green-fg">def</span> function_wrapper<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>wrapper_args<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    291</span>         ncalls<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">+=</span> <span class="ansi-cyan-fg">1</span>
+<span class="ansi-green-fg">--&gt; 292</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> function<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span><span class="ansi-blue-fg">(</span>wrapper_args <span class="ansi-blue-fg">+</span> args<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    293</span>
+<span class="ansi-green-intense-fg ansi-bold">    294</span>     <span class="ansi-green-fg">return</span> ncalls<span class="ansi-blue-fg">,</span> function_wrapper
+
+<span class="ansi-green-fg">~/GitHub/lightkurve/lightkurve/injection.py</span> in <span class="ansi-cyan-fg">neg_ln_posterior</span><span class="ansi-blue-fg">(theta)</span>
+<span class="ansi-green-intense-fg ansi-bold">    380</span>
+<span class="ansi-green-intense-fg ansi-bold">    381</span>     <span class="ansi-green-fg">def</span> neg_ln_posterior<span class="ansi-blue-fg">(</span>theta<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 382</span><span class="ansi-red-fg">         </span>log_posterior <span class="ansi-blue-fg">=</span> ln_like<span class="ansi-blue-fg">(</span>theta<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    383</span>         <span class="ansi-green-fg">return</span> <span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span> <span class="ansi-blue-fg">*</span> log_posterior
+<span class="ansi-green-intense-fg ansi-bold">    384</span>
+
+<span class="ansi-green-fg">~/GitHub/lightkurve/lightkurve/injection.py</span> in <span class="ansi-cyan-fg">ln_like</span><span class="ansi-blue-fg">(theta)</span>
+<span class="ansi-green-intense-fg ansi-bold">    354</span>         pdict <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">{</span><span class="ansi-blue-fg">&#39;period&#39;</span><span class="ansi-blue-fg">:</span>period<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;rprs&#39;</span><span class="ansi-blue-fg">:</span>rprs<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;T0&#39;</span><span class="ansi-blue-fg">:</span>T0<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;a&#39;</span><span class="ansi-blue-fg">:</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;inc&#39;</span><span class="ansi-blue-fg">:</span>inc<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;ecc&#39;</span><span class="ansi-blue-fg">:</span>ecc<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#39;w&#39;</span><span class="ansi-blue-fg">:</span>w<span class="ansi-blue-fg">}</span>
+<span class="ansi-green-intense-fg ansi-bold">    355</span>         t0 <span class="ansi-blue-fg">=</span> time_module<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-fg">--&gt; 356</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">for</span> i<span class="ansi-blue-fg">,</span> key <span class="ansi-green-fg">in</span> enumerate<span class="ansi-blue-fg">(</span>create_initial_guess<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>keys<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    357</span>             pdict<span class="ansi-blue-fg">[</span>key<span class="ansi-blue-fg">]</span> <span class="ansi-blue-fg">=</span> theta<span class="ansi-blue-fg">[</span>i<span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    358</span>         t1 <span class="ansi-blue-fg">=</span> time_module<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/GitHub/lightkurve/lightkurve/injection.py</span> in <span class="ansi-cyan-fg">create_initial_guess</span><span class="ansi-blue-fg">(fit_params)</span>
+<span class="ansi-green-intense-fg ansi-bold">    325</span>         qma <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0.3</span>
+<span class="ansi-green-intense-fg ansi-bold">    326</span>
+<span class="ansi-green-fg">--&gt; 327</span><span class="ansi-red-fg">         </span>results <span class="ansi-blue-fg">=</span> bls<span class="ansi-blue-fg">.</span>eebls<span class="ansi-blue-fg">(</span>time<span class="ansi-blue-fg">,</span> flux<span class="ansi-blue-fg">,</span> u1<span class="ansi-blue-fg">,</span> v1<span class="ansi-blue-fg">,</span> nf<span class="ansi-blue-fg">,</span> fmin<span class="ansi-blue-fg">,</span> df<span class="ansi-blue-fg">,</span> nbins<span class="ansi-blue-fg">,</span> qmi<span class="ansi-blue-fg">,</span> qma<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    328</span>
+<span class="ansi-green-intense-fg ansi-bold">    329</span>         bls_period <span class="ansi-blue-fg">=</span> results<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">KeyboardInterrupt</span>:
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">d1</span> <span class="o">=</span><span class="p">{</span><span class="s1">&#39;period&#39;</span><span class="p">:</span><span class="mi">72</span><span class="p">,</span> <span class="s1">&#39;rprs&#39;</span><span class="p">:</span><span class="mf">0.04</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">all_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">,</span> <span class="s1">&#39;rprs&#39;</span><span class="p">,</span> <span class="s1">&#39;T0&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">]</span>
+<span class="n">fit_params</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">,</span> <span class="s1">&#39;rprs&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x0s</span> <span class="o">=</span> <span class="p">[</span><span class="n">d1</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fit_params</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">x0s</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[72, 0.04]
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">recover_planet</span><span class="p">(</span><span class="n">lc_transit</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">lc_transit</span><span class="o">.</span><span class="n">flux</span><span class="p">,</span> <span class="n">lc_transit</span><span class="o">.</span><span class="n">flux_err</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">rprs</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="mi">133</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="mi">87</span><span class="p">,</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">d1</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">d1</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">dict</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">period_fit</span><span class="p">,</span> <span class="n">rprs_fit</span><span class="p">,</span> <span class="n">T0_fit</span><span class="p">,</span> <span class="n">inc_fit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s create a new model with these parameters and overplot with the
+injected signal.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">T0_f</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">inj</span><span class="o">.</span><span class="n">TransitModel</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add_planet</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="n">period_fit</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="n">T0_fit</span><span class="p">,</span> <span class="n">rprs</span><span class="o">=</span><span class="n">rprs_fit</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="n">inc</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span> <span class="n">ecc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span> <span class="n">limb_dark</span> <span class="o">=</span> <span class="s2">&quot;nonlinear&quot;</span><span class="p">,</span> <span class="n">u</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">])</span>
+
+<span class="n">flux_fit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">lc_transit</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lc_transit</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">lc_transit</span><span class="o">.</span><span class="n">flux</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lc_transit</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">flux_fit</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;KIC 1867630 Injection&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Time - 2454833 (days)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Flux&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Now-let’s-do-an-injection-test">
+<h1>Now let’s do an injection test<a class="headerlink" href="#Now-let’s-do-an-injection-test" title="Permalink to this headline">¶</a></h1>
+<p>We can inject and recover many signals in series and determine the
+fraction of recovered signals. We’re going to do a transit injection and
+recovery test on the G-type star previously used.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_star</span><span class="o">.</span><span class="n">plot</span>
+
+</pre></div>
+</div>
+</div>
+<p>We define the period, rprs, and T0 as Distribution classes. Each
+injection samples parameters randomly from these classes.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">lightkurve.injection</span> <span class="k">import</span> <span class="n">GaussianDistribution</span><span class="p">,</span> <span class="n">UniformDistribution</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">period</span> <span class="o">=</span> <span class="n">UniformDistribution</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">rprs</span> <span class="o">=</span> <span class="n">GaussianDistribution</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+<span class="n">T0</span> <span class="o">=</span> <span class="n">UniformDistribution</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">inc</span> <span class="o">=</span> <span class="n">UniformDistribution</span><span class="p">(</span><span class="mi">87</span><span class="p">,</span><span class="mi">90</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">frac</span> <span class="o">=</span> <span class="n">inj</span><span class="o">.</span><span class="n">injrec_test</span><span class="p">(</span><span class="n">lc_star</span><span class="p">,</span> <span class="n">signal_type</span><span class="o">=</span><span class="s1">&#39;Planet&#39;</span><span class="p">,</span> <span class="n">ntests</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">constr</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span> <span class="n">rprs</span><span class="o">=</span><span class="n">rprs</span><span class="p">,</span> <span class="n">T0</span><span class="o">=</span><span class="n">T0</span><span class="p">,</span> <span class="n">inc</span><span class="o">=</span><span class="n">inc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">frac</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>2/3 of the planets we tested are recovered using leastsq</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">lightkurve.injection</span> <span class="k">as</span> <span class="nn">inj</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sampler</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">lcinj</span><span class="o">.</span><span class="n">recover</span><span class="p">(</span><span class="s1">&#39;Supernova&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">nsteps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">initial_guess</span><span class="o">=</span><span class="n">x0</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="k">import</span> <span class="n">MaxNLocator</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;T0&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;amp&#39;</span><span class="p">,</span> <span class="s1">&#39;background&#39;</span><span class="p">]</span>
+
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig1</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Step Number&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sampler</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">lcinj</span><span class="o">.</span><span class="n">recover</span><span class="p">(</span><span class="s1">&#39;Supernova&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">nsteps</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">initial_guess</span><span class="o">=</span><span class="n">x0</span><span class="p">)</span>
+
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;T0&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;amp&#39;</span><span class="p">,</span> <span class="s1">&#39;background&#39;</span><span class="p">]</span>
+
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig1</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Step Number&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">corner</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="p">[:,</span> <span class="mi">900</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">corner</span><span class="o">.</span><span class="n">corner</span><span class="p">(</span><span class="n">samples</span><span class="p">[:],</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;$T0$&quot;</span><span class="p">,</span> <span class="s2">&quot;$z$&quot;</span><span class="p">,</span> <span class="s2">&quot;$amp$&quot;</span><span class="p">,</span> <span class="s1">&#39;$bkgd$&#39;</span><span class="p">],</span> <span class="n">smooth1d</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">show_titles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_n_ticks</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">title_fmt</span><span class="o">=</span><span class="s1">&#39;.3f&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">lc_transit</span><span class="o">.</span><span class="n">recover_planet</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">lc_transit</span><span class="o">.</span><span class="n">recover_planet</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span><span class="p">,</span> <span class="n">nwalkers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">nsteps</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="k">import</span> <span class="n">MaxNLocator</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">samples</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;inc&#39;</span><span class="p">,</span> <span class="s1">&#39;per&#39;</span><span class="p">,</span> <span class="s1">&#39;rprs&#39;</span><span class="p">]</span>
+
+<span class="n">fig1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig1</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sampler</span><span class="o">.</span><span class="n">chain</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Step Number&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MaxNLocator</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">fig1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">model</span> <span class="o">=</span> <span class="n">inj</span><span class="o">.</span><span class="n">SupernovaModel</span><span class="p">(</span><span class="n">T0</span><span class="o">=</span><span class="mi">2600</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s1">&#39;hsiao&#39;</span><span class="p">,</span> <span class="n">bandpass</span><span class="o">=</span><span class="s1">&#39;kepler&#39;</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">8.e-8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lcinj</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lcinj</span><span class="o">.</span><span class="n">recover_supernova</span><span class="p">(</span><span class="n">fit_params</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;T0&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;background&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%time</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">lc_transit</span><span class="o">.</span><span class="n">recover_planet</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright lightkurve developers and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

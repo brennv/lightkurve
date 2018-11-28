@@ -1,0 +1,959 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# How to inject and recover artifical signals from lightcurves -- *performance testing*"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In addition to tools that inject artifical signals into Kepler, K2, and TESS lightcurves, `lightcurve` also includes tools to recover signals (real or injected).  In this notebook, we will recover signals of an injected supernova and an injected planet."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%load_ext autoreload\n",
+    "%autoreload 2\n",
+    "%matplotlib inline\n",
+    "\n",
+    "from lightkurve import KeplerTargetPixelFile\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import lightkurve.injection as inj"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Fitting a Planetary Transit"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now let's try to fit a planetary transit.  Let's download a TPF and Kepler lightcurve of a G-type star:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "tpf_star = KeplerTargetPixelFile.from_archive(1867630, quarter=1)\n",
+    "#tpf_star.plot()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lc_star = tpf_star.to_lightcurve(aperture_mask='all')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "I am going to normalize this light curve, because we are multiplying in a normalized transit lightcurve."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lc_star = lc_star.remove_nans().remove_outliers()\n",
+    "lc_star = lc_star.normalize().flatten()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Now I'm injecting a lightcurve of a Jupiter-sized planet with an orbital period of 5 days."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from lightkurve.injection import GaussianDistribution"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = inj.TransitModel()\n",
+    "model.add_planet(period=8, rprs=.1, T0=133, inc=87)\n",
+    "lc_transit = lc_star.inject(model)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.50   0.00\n",
+      "0.48   0.00\n",
+      "0.51   0.00\n",
+      "0.48   0.00\n",
+      "0.49   0.00\n",
+      "0.51   0.00\n",
+      "0.52   0.00\n",
+      "0.49   0.00\n",
+      "0.51   0.00\n",
+      "0.54   0.00\n",
+      "0.48   0.00\n",
+      "0.55   0.00\n",
+      "0.49   0.00\n",
+      "0.52   0.00\n",
+      "0.54   0.00\n",
+      "0.47   0.00\n",
+      "0.48   0.00\n",
+      "0.46   0.00\n",
+      "0.48   0.00\n",
+      "0.48   0.00\n",
+      "0.47   0.00\n",
+      "0.47   0.00\n",
+      "0.46   0.00\n"
+     ]
+    },
+    {
+     "ename": "KeyboardInterrupt",
+     "evalue": "",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mKeyboardInterrupt\u001b[0m                         Traceback (most recent call last)",
+      "\u001b[0;32m<ipython-input-10-71575755b974>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mperiod_fit\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mrprs_fit\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mlc_transit\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrecover_planet\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/GitHub/lightkurve/lightkurve/lightcurve.py\u001b[0m in \u001b[0;36mrecover_planet\u001b[0;34m(self, fit_params, method, nwalkers, nsteps, threads)\u001b[0m\n\u001b[1;32m    813\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    814\u001b[0m         return injection.recover_planet(self.time, self.flux, self.flux_err, self.period, self.rprs,\n\u001b[0;32m--> 815\u001b[0;31m                                     self.T0, self.a, self.inc, self.ecc, self.w, self.limb_dark, self.u, fit_params=fit_params, method=method, nwalkers=nwalkers, nsteps=nsteps, threads=threads)\n\u001b[0m\u001b[1;32m    816\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    817\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/GitHub/lightkurve/lightkurve/injection.py\u001b[0m in \u001b[0;36mrecover_planet\u001b[0;34m(time, flux, flux_err, period, rprs, T0, a, inc, ecc, w, limb_dark, u, fit_params, method, nwalkers, nsteps, threads)\u001b[0m\n\u001b[1;32m    385\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0mmethod\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0;34m'optimize'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    386\u001b[0m         \u001b[0mx0\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mlist\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcreate_initial_guess\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mvalues\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 387\u001b[0;31m         \u001b[0mresult\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mop\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mminimize\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mneg_ln_posterior\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mx0\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    388\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    389\u001b[0m         \u001b[0mresults\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mdict\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mzip\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mlist\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcreate_initial_guess\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkeys\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mresult\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mx\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/_minimize.py\u001b[0m in \u001b[0;36mminimize\u001b[0;34m(fun, x0, args, method, jac, hess, hessp, bounds, constraints, tol, callback, options)\u001b[0m\n\u001b[1;32m    479\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0m_minimize_cg\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfun\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mx0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mjac\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcallback\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0moptions\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    480\u001b[0m     \u001b[0;32melif\u001b[0m \u001b[0mmeth\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0;34m'bfgs'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 481\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0m_minimize_bfgs\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mfun\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mx0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0margs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mjac\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcallback\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m**\u001b[0m\u001b[0moptions\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    482\u001b[0m     \u001b[0;32melif\u001b[0m \u001b[0mmeth\u001b[0m \u001b[0;34m==\u001b[0m \u001b[0;34m'newton-cg'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    483\u001b[0m         return _minimize_newtoncg(fun, x0, args, jac, hess, hessp, callback,\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py\u001b[0m in \u001b[0;36m_minimize_bfgs\u001b[0;34m(fun, x0, args, jac, callback, gtol, norm, eps, maxiter, disp, return_all, **unknown_options)\u001b[0m\n\u001b[1;32m    962\u001b[0m             \u001b[0malpha_k\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfc\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mgc\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mold_fval\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mold_old_fval\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mgfkp1\u001b[0m \u001b[0;34m=\u001b[0m\u001b[0;31m \u001b[0m\u001b[0;31m\\\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    963\u001b[0m                      _line_search_wolfe12(f, myfprime, xk, pk, gfk,\n\u001b[0;32m--> 964\u001b[0;31m                                           old_fval, old_old_fval, amin=1e-100, amax=1e100)\n\u001b[0m\u001b[1;32m    965\u001b[0m         \u001b[0;32mexcept\u001b[0m \u001b[0m_LineSearchError\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    966\u001b[0m             \u001b[0;31m# Line search failed to find a better solution.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py\u001b[0m in \u001b[0;36m_line_search_wolfe12\u001b[0;34m(f, fprime, xk, pk, gfk, old_fval, old_old_fval, **kwargs)\u001b[0m\n\u001b[1;32m    781\u001b[0m     ret = line_search_wolfe1(f, fprime, xk, pk, gfk,\n\u001b[1;32m    782\u001b[0m                              \u001b[0mold_fval\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mold_old_fval\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 783\u001b[0;31m                              **kwargs)\n\u001b[0m\u001b[1;32m    784\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    785\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0mret\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mextra_condition\u001b[0m \u001b[0;32mis\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0;32mNone\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/linesearch.py\u001b[0m in \u001b[0;36mline_search_wolfe1\u001b[0;34m(f, fprime, xk, pk, gfk, old_fval, old_old_fval, args, c1, c2, amax, amin, xtol)\u001b[0m\n\u001b[1;32m     99\u001b[0m     stp, fval, old_fval = scalar_search_wolfe1(\n\u001b[1;32m    100\u001b[0m             \u001b[0mphi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mderphi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mold_fval\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mold_old_fval\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mderphi0\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 101\u001b[0;31m             c1=c1, c2=c2, amax=amax, amin=amin, xtol=xtol)\n\u001b[0m\u001b[1;32m    102\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    103\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mstp\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfc\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mgc\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfval\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mold_fval\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mgval\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/linesearch.py\u001b[0m in \u001b[0;36mscalar_search_wolfe1\u001b[0;34m(phi, derphi, phi0, old_phi0, derphi0, c1, c2, amax, amin, xtol)\u001b[0m\n\u001b[1;32m    173\u001b[0m             \u001b[0malpha1\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mstp\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    174\u001b[0m             \u001b[0mphi1\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mphi\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstp\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 175\u001b[0;31m             \u001b[0mderphi1\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mderphi\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mstp\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    176\u001b[0m         \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    177\u001b[0m             \u001b[0;32mbreak\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/linesearch.py\u001b[0m in \u001b[0;36mderphi\u001b[0;34m(s)\u001b[0m\n\u001b[1;32m     88\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     89\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mderphi\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0ms\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 90\u001b[0;31m         \u001b[0mgval\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mfprime\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mxk\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0ms\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0mpk\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m*\u001b[0m\u001b[0mnewargs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m     91\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mgradient\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     92\u001b[0m             \u001b[0mgc\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py\u001b[0m in \u001b[0;36mfunction_wrapper\u001b[0;34m(*wrapper_args)\u001b[0m\n\u001b[1;32m    290\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mfunction_wrapper\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0mwrapper_args\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    291\u001b[0m         \u001b[0mncalls\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 292\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mfunction\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mwrapper_args\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0margs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    293\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    294\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mncalls\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfunction_wrapper\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py\u001b[0m in \u001b[0;36mapprox_fprime\u001b[0;34m(xk, f, epsilon, *args)\u001b[0m\n\u001b[1;32m    701\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    702\u001b[0m     \"\"\"\n\u001b[0;32m--> 703\u001b[0;31m     \u001b[0;32mreturn\u001b[0m \u001b[0m_approx_fprime_helper\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mxk\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mf\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mepsilon\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0margs\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0margs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    704\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    705\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py\u001b[0m in \u001b[0;36m_approx_fprime_helper\u001b[0;34m(xk, f, epsilon, args, f0)\u001b[0m\n\u001b[1;32m    641\u001b[0m         \u001b[0mei\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m1.0\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    642\u001b[0m         \u001b[0md\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mepsilon\u001b[0m \u001b[0;34m*\u001b[0m \u001b[0mei\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 643\u001b[0;31m         \u001b[0mgrad\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m(\u001b[0m\u001b[0mf\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mxk\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0md\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0margs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m-\u001b[0m \u001b[0mf0\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;34m/\u001b[0m \u001b[0md\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    644\u001b[0m         \u001b[0mei\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mk\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0.0\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    645\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mgrad\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/anaconda3/lib/python3.6/site-packages/scipy/optimize/optimize.py\u001b[0m in \u001b[0;36mfunction_wrapper\u001b[0;34m(*wrapper_args)\u001b[0m\n\u001b[1;32m    290\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mfunction_wrapper\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0mwrapper_args\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    291\u001b[0m         \u001b[0mncalls\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m0\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m+=\u001b[0m \u001b[0;36m1\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 292\u001b[0;31m         \u001b[0;32mreturn\u001b[0m \u001b[0mfunction\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m*\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mwrapper_args\u001b[0m \u001b[0;34m+\u001b[0m \u001b[0margs\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    293\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    294\u001b[0m     \u001b[0;32mreturn\u001b[0m \u001b[0mncalls\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfunction_wrapper\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/GitHub/lightkurve/lightkurve/injection.py\u001b[0m in \u001b[0;36mneg_ln_posterior\u001b[0;34m(theta)\u001b[0m\n\u001b[1;32m    380\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    381\u001b[0m     \u001b[0;32mdef\u001b[0m \u001b[0mneg_ln_posterior\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtheta\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 382\u001b[0;31m         \u001b[0mlog_posterior\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mln_like\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtheta\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    383\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0;34m-\u001b[0m\u001b[0;36m1\u001b[0m \u001b[0;34m*\u001b[0m \u001b[0mlog_posterior\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    384\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/GitHub/lightkurve/lightkurve/injection.py\u001b[0m in \u001b[0;36mln_like\u001b[0;34m(theta)\u001b[0m\n\u001b[1;32m    354\u001b[0m         \u001b[0mpdict\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m{\u001b[0m\u001b[0;34m'period'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mperiod\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'rprs'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mrprs\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'T0'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mT0\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'a'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0ma\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'inc'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0minc\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'ecc'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mecc\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'w'\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mw\u001b[0m\u001b[0;34m}\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    355\u001b[0m         \u001b[0mt0\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtime_module\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtime\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 356\u001b[0;31m         \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mkey\u001b[0m \u001b[0;32min\u001b[0m \u001b[0menumerate\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcreate_initial_guess\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mkeys\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    357\u001b[0m             \u001b[0mpdict\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mkey\u001b[0m\u001b[0;34m]\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtheta\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    358\u001b[0m         \u001b[0mt1\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mtime_module\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtime\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;32m~/GitHub/lightkurve/lightkurve/injection.py\u001b[0m in \u001b[0;36mcreate_initial_guess\u001b[0;34m(fit_params)\u001b[0m\n\u001b[1;32m    325\u001b[0m         \u001b[0mqma\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;36m0.3\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    326\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 327\u001b[0;31m         \u001b[0mresults\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mbls\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0meebls\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtime\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mflux\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mu1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mv1\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnf\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mfmin\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mdf\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mnbins\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mqmi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mqma\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    328\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    329\u001b[0m         \u001b[0mbls_period\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mresults\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mKeyboardInterrupt\u001b[0m: "
+     ]
+    }
+   ],
+   "source": [
+    "period_fit, rprs_fit = lc_transit.recover_planet()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d1 ={'period':72, 'rprs':0.04}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "all_list = ['period', 'rprs', 'T0', 'a']\n",
+    "fit_params = ['period', 'rprs']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x0s = [d1[key] for key in fit_params]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[72, 0.04]"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "x0s"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "recover_planet(lc_transit.time, lc_transit.flux, lc_transit.flux_err, period=8, rprs=.1, T0=133, inc=87, )"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d1.keys()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for i, val in enumerate(d1.values()):\n",
+    "    print(i, type(val))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dict"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(period_fit, rprs_fit, T0_fit, inc_fit)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Let's create a new model with these parameters and overplot with the injected signal."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "T0_f"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = inj.TransitModel()\n",
+    "model.add_planet(period=period_fit, T0=T0_fit, rprs=rprs_fit, a = 15, inc = 90, ecc = 0, w = 90, limb_dark = \"nonlinear\", u = [0.5, 0.1, 0.1, -0.1])\n",
+    "\n",
+    "flux_fit = model.evaluate(lc_transit.time.astype(np.float))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.plot(lc_transit.time, lc_transit.flux, color='k')\n",
+    "plt.plot(lc_transit.time, flux_fit, color='r')\n",
+    "plt.title('KIC 1867630 Injection')\n",
+    "plt.xlabel('Time - 2454833 (days)')\n",
+    "plt.ylabel('Flux')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Now let's do an injection test"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can inject and recover many signals in series and determine the fraction of recovered signals.  We're going to do a transit injection and recovery test on the G-type star previously used."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "lc_star.plot\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We define the period, rprs, and T0 as Distribution classes.  Each injection samples parameters randomly from these classes."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from lightkurve.injection import GaussianDistribution, UniformDistribution"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "period = UniformDistribution(1,10)\n",
+    "rprs = GaussianDistribution(0.03, 0.02)\n",
+    "T0 = UniformDistribution(1,6)\n",
+    "inc = UniformDistribution(87,90)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "frac = inj.injrec_test(lc_star, signal_type='Planet', ntests=5, constr=0.03, period=period, rprs=rprs, T0=T0, inc=inc)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "print(frac)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "2/3 of the planets we tested are recovered using leastsq"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import lightkurve.injection as inj"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%time\n",
+    "sampler, x = lcinj.recover('Supernova', method='mcmc', nwalkers=8, nsteps=24, initial_guess=x0)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from matplotlib.ticker import MaxNLocator\n",
+    "\n",
+    "samples = sampler.chain\n",
+    "labels = ['T0', 'z', 'amp', 'background']\n",
+    "\n",
+    "fig1 = plt.figure(figsize=[8, 8])\n",
+    "for i in range(samples.shape[-1]):\n",
+    "    ax = fig1.add_subplot(4, 1, i + 1)\n",
+    "    ax.plot(sampler.chain[:, 0:1000, i].T, \"k\", alpha=0.3)\n",
+    "    ax.set_xlim(0, sampler.chain.shape[1])\n",
+    "    if i < 1:\n",
+    "        ax.set_xticklabels([])\n",
+    "    else:\n",
+    "        ax.set_xlabel(\"Step Number\")\n",
+    "    ax.set_ylabel(labels[i])\n",
+    "    ax.yaxis.set_major_locator(MaxNLocator(4))\n",
+    "\n",
+    "    plt.xlim(0, 24)\n",
+    "fig1.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%time\n",
+    "sampler, x = lcinj.recover('Supernova', method='mcmc', ndim=4, nwalkers=10, nsteps=4, initial_guess=x0)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "samples = sampler.chain\n",
+    "labels = ['T0', 'z', 'amp', 'background']\n",
+    "\n",
+    "fig1 = plt.figure(figsize=[8, 8])\n",
+    "for i in range(samples.shape[-1]):\n",
+    "    ax = fig1.add_subplot(4, 1, i + 1)\n",
+    "    ax.plot(sampler.chain[:, 0:1000, i].T, \"k\", alpha=0.3)\n",
+    "    ax.set_xlim(0, sampler.chain.shape[1])\n",
+    "    if i < 1:\n",
+    "        ax.set_xticklabels([])\n",
+    "    else:\n",
+    "        ax.set_xlabel(\"Step Number\")\n",
+    "    ax.set_ylabel(labels[i])\n",
+    "    ax.yaxis.set_major_locator(MaxNLocator(4))\n",
+    "\n",
+    "    plt.xlim(0, 4)\n",
+    "fig1.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import corner"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sampler.chain.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "samples = sampler.chain[:, 900:, :].reshape((-1, 4))\n",
+    "\n",
+    "corner.corner(samples[:], labels=[\"$T0$\", \"$z$\", \"$amp$\", '$bkgd$'], smooth1d=True,\n",
+    "             show_titles=True, max_n_ticks=5,title_fmt='.3f',color='k')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "%%time\n",
+    "x = lc_transit.recover_planet()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "scrolled": false
+   },
+   "outputs": [],
+   "source": [
+    "print(x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%time\n",
+    "sampler = lc_transit.recover_planet(method='mcmc', nwalkers=8, nsteps=4)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from matplotlib.ticker import MaxNLocator"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "samples = sampler.chain\n",
+    "labels = ['inc', 'per', 'rprs']\n",
+    "\n",
+    "fig1 = plt.figure(figsize=[8, 8])\n",
+    "for i in range(samples.shape[-1]):\n",
+    "    ax = fig1.add_subplot(4, 1, i + 1)\n",
+    "    ax.plot(sampler.chain[:, 0:1000, i].T, \"k\", alpha=0.3)\n",
+    "    ax.set_xlim(0, sampler.chain.shape[1])\n",
+    "    if i < 1:\n",
+    "        ax.set_xticklabels([])\n",
+    "    else:\n",
+    "        ax.set_xlabel(\"Step Number\")\n",
+    "    ax.set_ylabel(labels[i])\n",
+    "    ax.yaxis.set_major_locator(MaxNLocator(4))\n",
+    "\n",
+    "    plt.xlim(0, 4)\n",
+    "fig1.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "model = inj.SupernovaModel(T0=2600, source='hsiao', bandpass='kepler', z=0.5, amplitude=8.e-8)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lcinj = lc.inject(model)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "lcinj.recover_supernova(fit_params=['T0', 'z', 'background'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%%time\n",
+    "x = lc_transit.recover_planet()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

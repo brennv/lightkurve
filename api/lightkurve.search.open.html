@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>open &mdash; lightkurve 1.0b22 documentation</title>
+  <title>open &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Periodogram classes" href="periodogram.html" />
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -213,20 +214,17 @@
 <h1>open<a class="headerlink" href="#open" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="lightkurve.search.open">
-<code class="descclassname">lightkurve.search.</code><code class="descname">open</code><span class="sig-paren">(</span><em>path_or_url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lightkurve/search.html#open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lightkurve.search.open" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lightkurve.search.</code><code class="descname">open</code><span class="sig-paren">(</span><em>path_or_url</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lightkurve/search.html#open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lightkurve.search.open" title="Permalink to this definition">¶</a></dt>
 <dd><p>Opens a Kepler or TESS data product.</p>
-<p>This function will automatically detect the type of the data product,
-and return the appropriate object. File types currently supported are:</p>
+<p>This function will use the <cite>detect_filetype()</cite> function to
+automatically detect the type of the data product, and return the
+appropriate object. File types currently supported are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>* `KeplerTargetPixelFile` (typical suffix &quot;-targ.fits.gz&quot;);
 * `KeplerLightCurveFile` (typical suffix &quot;llc.fits&quot;);
 * `TessTargetPixelFile` (typical suffix &quot;_tp.fits&quot;);
 * `TessLightCurveFile` (typical suffix &quot;_lc.fits&quot;).
 </pre></div>
 </div>
-<p>The function will detect the file type by looking at both the TELESCOP and
-CREATOR keywords in the first extension of the FITS file.
-If the file is not recognized as a Kepler or TESS data product,
-a <cite>ValueError</cite> is raised.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -256,7 +254,7 @@ a <cite>ValueError</cite> is raised.</p>
 </table>
 <p class="rubric">Examples</p>
 <p>To open a target pixel file using its path or URL, simply use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tpf</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;mytpf.fits&quot;</span><span class="p">)</span>  
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tpf</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;mytpf.fits&quot;</span><span class="p">)</span>  <span class="c1"># doctest: +SKIP</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -283,7 +281,7 @@ a <cite>ValueError</cite> is raised.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -302,21 +300,14 @@ a <cite>ValueError</cite> is raised.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

@@ -1,0 +1,635 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; lightkurve 1.0b23.dev documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> lightkurve
+          
+
+          
+            
+            <img src="../_static/lightkurve.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0b23.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="section1.html">Introduction to lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="section2.html">Science with lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="section3.html">Extracting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="section4.html">Systematics correction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About lightkurve</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing and reporting issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing and acknowledging lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other_software.html">Other software</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">lightkurve</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/Untitled4.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">lightkurve</span> <span class="k">import</span> <span class="n">KeplerTargetPixelFile</span>
+
+<span class="n">tpf_star</span> <span class="o">=</span> <span class="n">KeplerTargetPixelFile</span><span class="o">.</span><span class="n">from_archive</span><span class="p">(</span><span class="mi">1867630</span><span class="p">,</span> <span class="n">quarter</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">lc_star</span> <span class="o">=</span> <span class="n">tpf_star</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+
+<span class="n">lc_star</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">lc_star</span><span class="o">.</span><span class="n">flux</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+/Users/obsidian/GitHub/lightkurve/lightkurve/targetpixelfile.py:696: LightkurveWarning: `TargetPixelFile.from_archive` is deprecated and will be removed soon, please use `lightkurve.search_targetpixelfile()` instead.
+  LightkurveWarning)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[14]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>(dtype(&#39;&gt;f8&#39;), dtype(&#39;float32&#39;))
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_star</span><span class="o">.</span><span class="n">time</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[16]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>148.2383312137099
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_star</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">dtype</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[22]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>dtype(&#39;&gt;f8&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;time&#39;</span><span class="p">:</span><span class="n">lc_star</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="s1">&#39;flux&#39;</span><span class="p">:</span><span class="n">lc_star</span><span class="o">.</span><span class="n">flux</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">df2</span> <span class="o">=</span> <span class="n">lc_star</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">df2</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/indexing.py</span> in <span class="ansi-cyan-fg">_getbool_axis</span><span class="ansi-blue-fg">(self, key, axis)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1495</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1496</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>obj<span class="ansi-blue-fg">.</span>_take<span class="ansi-blue-fg">(</span>inds<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1497</span>         <span class="ansi-green-fg">except</span> Exception <span class="ansi-green-fg">as</span> detail<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/generic.py</span> in <span class="ansi-cyan-fg">_take</span><span class="ansi-blue-fg">(self, indices, axis, is_copy)</span>
+<span class="ansi-green-intense-fg ansi-bold">   2788</span>                                    axis<span class="ansi-blue-fg">=</span>self<span class="ansi-blue-fg">.</span>_get_block_manager_axis<span class="ansi-blue-fg">(</span>axis<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 2789</span><span class="ansi-red-fg">                                    verify=True)
+</span><span class="ansi-green-intense-fg ansi-bold">   2790</span>         result <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_constructor<span class="ansi-blue-fg">(</span>new_data<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>__finalize__<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/internals.py</span> in <span class="ansi-cyan-fg">take</span><span class="ansi-blue-fg">(self, indexer, axis, verify, convert)</span>
+<span class="ansi-green-intense-fg ansi-bold">   4538</span>         return self.reindex_indexer(new_axis=new_labels, indexer=indexer,
+<span class="ansi-green-fg">-&gt; 4539</span><span class="ansi-red-fg">                                     axis=axis, allow_dups=True)
+</span><span class="ansi-green-intense-fg ansi-bold">   4540</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/internals.py</span> in <span class="ansi-cyan-fg">reindex_indexer</span><span class="ansi-blue-fg">(self, new_axis, indexer, axis, fill_value, allow_dups, copy)</span>
+<span class="ansi-green-intense-fg ansi-bold">   4420</span>             new_blocks = self._slice_take_blocks_ax0(indexer,
+<span class="ansi-green-fg">-&gt; 4421</span><span class="ansi-red-fg">                                                      fill_tuple=(fill_value,))
+</span><span class="ansi-green-intense-fg ansi-bold">   4422</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/internals.py</span> in <span class="ansi-cyan-fg">_slice_take_blocks_ax0</span><span class="ansi-blue-fg">(self, slice_or_indexer, fill_tuple)</span>
+<span class="ansi-green-intense-fg ansi-bold">   4500</span>                                               axis<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> new_mgr_locs<span class="ansi-blue-fg">=</span>mgr_locs<span class="ansi-blue-fg">,</span>
+<span class="ansi-green-fg">-&gt; 4501</span><span class="ansi-red-fg">                                               fill_tuple=None))
+</span><span class="ansi-green-intense-fg ansi-bold">   4502</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/internals.py</span> in <span class="ansi-cyan-fg">take_nd</span><span class="ansi-blue-fg">(self, indexer, axis, new_mgr_locs, fill_tuple)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1253</span>             new_values = algos.take_nd(values, indexer, axis=axis,
+<span class="ansi-green-fg">-&gt; 1254</span><span class="ansi-red-fg">                                        allow_fill=False)
+</span><span class="ansi-green-intense-fg ansi-bold">   1255</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/algorithms.py</span> in <span class="ansi-cyan-fg">take_nd</span><span class="ansi-blue-fg">(arr, indexer, axis, out, fill_value, mask_info, allow_fill)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1658</span>                                  mask_info=mask_info)
+<span class="ansi-green-fg">-&gt; 1659</span><span class="ansi-red-fg">     </span>func<span class="ansi-blue-fg">(</span>arr<span class="ansi-blue-fg">,</span> indexer<span class="ansi-blue-fg">,</span> out<span class="ansi-blue-fg">,</span> fill_value<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1660</span>
+
+<span class="ansi-green-fg">pandas/_libs/algos_take_helper.pxi</span> in <span class="ansi-cyan-fg">pandas._libs.algos.take_2d_axis1_float64_float64</span><span class="ansi-blue-fg">()</span>
+
+<span class="ansi-red-fg">ValueError</span>: Big-endian buffer not supported on little-endian compiler
+
+During handling of the above exception, another exception occurred:
+
+<span class="ansi-red-fg">KeyError</span>                                  Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-37-77c0659fc2a8&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>df2<span class="ansi-blue-fg">.</span>describe<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/generic.py</span> in <span class="ansi-cyan-fg">describe</span><span class="ansi-blue-fg">(self, percentiles, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   8563</span>         <span class="ansi-green-fg">elif</span> <span class="ansi-blue-fg">(</span>include <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span> <span class="ansi-green-fg">and</span> <span class="ansi-blue-fg">(</span>exclude <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   8564</span>             <span class="ansi-red-fg"># when some numerics are found, keep only numerics</span>
+<span class="ansi-green-fg">-&gt; 8565</span><span class="ansi-red-fg">             </span>data <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>select_dtypes<span class="ansi-blue-fg">(</span>include<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">[</span>np<span class="ansi-blue-fg">.</span>number<span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   8566</span>             <span class="ansi-green-fg">if</span> len<span class="ansi-blue-fg">(</span>data<span class="ansi-blue-fg">.</span>columns<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">==</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   8567</span>                 data <span class="ansi-blue-fg">=</span> self
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/frame.py</span> in <span class="ansi-cyan-fg">select_dtypes</span><span class="ansi-blue-fg">(self, include, exclude)</span>
+<span class="ansi-green-intense-fg ansi-bold">   3089</span>
+<span class="ansi-green-intense-fg ansi-bold">   3090</span>         dtype_indexer <span class="ansi-blue-fg">=</span> include_these <span class="ansi-blue-fg">&amp;</span> exclude_these
+<span class="ansi-green-fg">-&gt; 3091</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>loc<span class="ansi-blue-fg">[</span>com<span class="ansi-blue-fg">.</span>_get_info_slice<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> dtype_indexer<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">   3092</span>
+<span class="ansi-green-intense-fg ansi-bold">   3093</span>     <span class="ansi-green-fg">def</span> _box_item_values<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> key<span class="ansi-blue-fg">,</span> values<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/indexing.py</span> in <span class="ansi-cyan-fg">__getitem__</span><span class="ansi-blue-fg">(self, key)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1470</span>             <span class="ansi-green-fg">except</span> <span class="ansi-blue-fg">(</span>KeyError<span class="ansi-blue-fg">,</span> IndexError<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1471</span>                 <span class="ansi-green-fg">pass</span>
+<span class="ansi-green-fg">-&gt; 1472</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_getitem_tuple<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1473</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1474</span>             <span class="ansi-red-fg"># we by definition only have the 0th axis</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/indexing.py</span> in <span class="ansi-cyan-fg">_getitem_tuple</span><span class="ansi-blue-fg">(self, tup)</span>
+<span class="ansi-green-intense-fg ansi-bold">    888</span>                 <span class="ansi-green-fg">continue</span>
+<span class="ansi-green-intense-fg ansi-bold">    889</span>
+<span class="ansi-green-fg">--&gt; 890</span><span class="ansi-red-fg">             </span>retval <span class="ansi-blue-fg">=</span> getattr<span class="ansi-blue-fg">(</span>retval<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">.</span>name<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>_getitem_axis<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>i<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    891</span>
+<span class="ansi-green-intense-fg ansi-bold">    892</span>         <span class="ansi-green-fg">return</span> retval
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/indexing.py</span> in <span class="ansi-cyan-fg">_getitem_axis</span><span class="ansi-blue-fg">(self, key, axis)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1866</span>             <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_get_slice_axis<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1867</span>         <span class="ansi-green-fg">elif</span> com<span class="ansi-blue-fg">.</span>is_bool_indexer<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1868</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_getbool_axis<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1869</span>         <span class="ansi-green-fg">elif</span> is_list_like_indexer<span class="ansi-blue-fg">(</span>key<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">   1870</span>
+
+<span class="ansi-green-fg">~/anaconda3/envs/lightkurve_base/lib/python3.6/site-packages/pandas/core/indexing.py</span> in <span class="ansi-cyan-fg">_getbool_axis</span><span class="ansi-blue-fg">(self, key, axis)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1496</span>             <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>obj<span class="ansi-blue-fg">.</span>_take<span class="ansi-blue-fg">(</span>inds<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span>axis<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1497</span>         <span class="ansi-green-fg">except</span> Exception <span class="ansi-green-fg">as</span> detail<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">-&gt; 1498</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> self<span class="ansi-blue-fg">.</span>_exception<span class="ansi-blue-fg">(</span>detail<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1499</span>
+<span class="ansi-green-intense-fg ansi-bold">   1500</span>     <span class="ansi-green-fg">def</span> _get_slice_axis<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> slice_obj<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">KeyError</span>: ValueError(&#39;Big-endian buffer not supported on little-endian compiler&#39;,)
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright lightkurve developers and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

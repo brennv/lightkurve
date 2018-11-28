@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lightkurve.lightcurvefile &mdash; lightkurve 1.0b22 documentation</title>
+  <title>lightkurve.lightcurvefile &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -179,7 +180,7 @@
 <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="k">import</span> <span class="n">fits</span> <span class="k">as</span> <span class="n">pyfits</span>
 
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="p">(</span><span class="n">bkjd_to_astropy_time</span><span class="p">,</span> <span class="n">KeplerQualityFlags</span><span class="p">,</span> <span class="n">TessQualityFlags</span><span class="p">,</span>
-                    <span class="n">LightkurveWarning</span><span class="p">)</span>
+                    <span class="n">LightkurveWarning</span><span class="p">,</span> <span class="n">detect_filetype</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">MPLSTYLE</span>
 
@@ -315,6 +316,23 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">KeplerLightCurveFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># check to make sure the correct filetype has been provided</span>
+        <span class="n">filetype</span> <span class="o">=</span> <span class="n">detect_filetype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">filetype</span> <span class="o">==</span> <span class="s1">&#39;TessLightCurveFile&#39;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;A TESS data product is being opened using the &quot;</span>
+                          <span class="s2">&quot;`KeplerLightCurveFile` class. &quot;</span>
+                          <span class="s2">&quot;Please use `TessLightCurveFile` instead.&quot;</span><span class="p">,</span>
+                          <span class="n">LightkurveWarning</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">filetype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Given fits file not recognized as Kepler or TESS &quot;</span>
+                          <span class="s2">&quot;observation.&quot;</span><span class="p">,</span> <span class="n">LightkurveWarning</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;TargetPixelFile&quot;</span> <span class="ow">in</span> <span class="n">filetype</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;A `TargetPixelFile` object is being opened as a &quot;</span>
+                          <span class="s2">&quot;`KeplerLightCurveFile`. &quot;</span>
+                          <span class="s2">&quot;Please use `KeplerTargetPixelFile` instead.&quot;</span><span class="p">,</span>
+                          <span class="n">LightkurveWarning</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">quality_bitmask</span> <span class="o">=</span> <span class="n">quality_bitmask</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quality_mask</span> <span class="o">=</span> <span class="n">KeplerQualityFlags</span><span class="o">.</span><span class="n">create_quality_mask</span><span class="p">(</span>
                                 <span class="n">quality_array</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;SAP_QUALITY&#39;</span><span class="p">],</span>
@@ -512,6 +530,23 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">TessLightCurveFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># check to make sure the correct filetype has been provided</span>
+        <span class="n">filetype</span> <span class="o">=</span> <span class="n">detect_filetype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">filetype</span> <span class="o">==</span> <span class="s1">&#39;KeplerLightCurveFile&#39;</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;A Kepler data product is being opened using the &quot;</span>
+                          <span class="s2">&quot;`TessLightCurveFile` class. &quot;</span>
+                          <span class="s2">&quot;Please use `KeplerLightCurveFile` instead.&quot;</span><span class="p">,</span>
+                          <span class="n">LightkurveWarning</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">filetype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Given fits file not recognized as Kepler or TESS &quot;</span>
+                          <span class="s2">&quot;observation.&quot;</span><span class="p">,</span> <span class="n">LightkurveWarning</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;TargetPixelFile&quot;</span> <span class="ow">in</span> <span class="n">filetype</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;A `TargetPixelFile` object is being opened as a &quot;</span>
+                          <span class="s2">&quot;`TessLightCurveFile`. &quot;</span>
+                          <span class="s2">&quot;Please use `TessTargetPixelFile` instead.&quot;</span><span class="p">,</span>
+                          <span class="n">LightkurveWarning</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">quality_bitmask</span> <span class="o">=</span> <span class="n">quality_bitmask</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quality_mask</span> <span class="o">=</span> <span class="n">TessQualityFlags</span><span class="o">.</span><span class="n">create_quality_mask</span><span class="p">(</span>
                                 <span class="n">quality_array</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;QUALITY&#39;</span><span class="p">],</span>
@@ -520,6 +555,7 @@
         <span class="c1"># which were not flagged by a QUALITY flag yet; the line below prevents</span>
         <span class="c1"># these cadences from being used. They would break most methods!</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quality_mask</span> <span class="o">&amp;=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hdu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;TIME&#39;</span><span class="p">])</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">targetid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">()[</span><span class="s1">&#39;TICID&#39;</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
@@ -560,7 +596,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -579,21 +615,14 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Periodogram &mdash; lightkurve 1.0b22 documentation</title>
+  <title>Periodogram &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Systematics correction classes" href="correctors.html" />
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -292,8 +293,8 @@ freq_unit is the unit of the frequency attribute.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#lightkurve.periodogram.Periodogram.plot" title="lightkurve.periodogram.Periodogram.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([scale,&nbsp;ax,&nbsp;xlabel,&nbsp;ylabel,&nbsp;title,&nbsp;…])</td>
 <td>Plots the Periodogram.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#lightkurve.periodogram.Periodogram.properties" title="lightkurve.periodogram.Periodogram.properties"><code class="xref py py-obj docutils literal notranslate"><span class="pre">properties</span></code></a>()</td>
-<td>Prints a summary of the non-callable attributes of the Periodogram object.</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal notranslate"><span class="pre">Periodogram.properties</span></code></td>
+<td></td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="#lightkurve.periodogram.Periodogram.smooth" title="lightkurve.periodogram.Periodogram.smooth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth</span></code></a>([method,&nbsp;filter_width])</td>
 <td>Smooths the power spectrum using the ‘boxkernel’ or ‘logmedian’ method.</td>
@@ -575,14 +576,6 @@ period and ‘log’ scale.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lightkurve.periodogram.Periodogram.properties">
-<code class="descname">properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lightkurve/periodogram.html#Periodogram.properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lightkurve.periodogram.Periodogram.properties" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prints a summary of the non-callable attributes of the Periodogram object.</p>
-<p>Prints in order of type (ints, strings, lists, arrays and others).
-Prints in alphabetical order.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="lightkurve.periodogram.Periodogram.smooth">
 <code class="descname">smooth</code><span class="sig-paren">(</span><em>method='boxkernel'</em>, <em>filter_width=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lightkurve/periodogram.html#Periodogram.smooth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lightkurve.periodogram.Periodogram.smooth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Smooths the power spectrum using the ‘boxkernel’ or ‘logmedian’ method.</p>
@@ -670,7 +663,7 @@ has been smoothed.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -689,21 +682,14 @@ has been smoothed.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

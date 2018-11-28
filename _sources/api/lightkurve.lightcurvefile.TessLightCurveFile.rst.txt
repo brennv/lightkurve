@@ -15,13 +15,13 @@ TessLightCurveFile
       ~TessLightCurveFile.cadenceno
       ~TessLightCurveFile.dec
       ~TessLightCurveFile.ra
+      ~TessLightCurveFile.ticid
       ~TessLightCurveFile.time
 
    .. rubric:: Methods Summary
 
    .. autosummary::
 
-      ~TessLightCurveFile.from_fits
       ~TessLightCurveFile.get_lightcurve
       ~TessLightCurveFile.header
       ~TessLightCurveFile.plot
@@ -33,11 +33,11 @@ TessLightCurveFile
    .. autoattribute:: cadenceno
    .. autoattribute:: dec
    .. autoattribute:: ra
+   .. autoattribute:: ticid
    .. autoattribute:: time
 
    .. rubric:: Methods Documentation
 
-   .. automethod:: from_fits
    .. automethod:: get_lightcurve
    .. automethod:: header
    .. automethod:: plot

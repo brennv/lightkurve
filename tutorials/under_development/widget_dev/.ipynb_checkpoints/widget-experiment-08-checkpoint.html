@@ -1,0 +1,1136 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lightkurve quicklook prototype &mdash; lightkurve 1.0b23.dev documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+
+  
+  <script src="../../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> lightkurve
+          
+
+          
+            
+            <img src="../../../../_static/lightkurve.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0b23.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../section1.html">Introduction to lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../section2.html">Science with lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../section3.html">Extracting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../section4.html">Systematics correction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About lightkurve</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../contributing.html">Contributing and reporting issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../citing.html">Citing and acknowledging lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../other_software.html">Other software</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">lightkurve</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+      <li>Lightkurve quicklook prototype</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../../_sources/tutorials/under_development/widget_dev/.ipynb_checkpoints/widget-experiment-08-checkpoint.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="section" id="Lightkurve-quicklook-prototype">
+<h1>Lightkurve quicklook prototype<a class="headerlink" href="#Lightkurve-quicklook-prototype" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> notebook
+<span class="kn">from</span> <span class="nn">lightkurve</span> <span class="k">import</span> <span class="n">KeplerTargetPixelFile</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s make the Jupyter cells wider</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="k">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&lt;style&gt;.container { width:100% !important; }&lt;/style&gt;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<style>.container { width:100% !important; }</style></div>
+</div>
+<div class="section" id="Download-a-Kepler-target-pixel-file-(TPF)">
+<h2>Download a Kepler target pixel file (TPF)<a class="headerlink" href="#Download-a-Kepler-target-pixel-file-(TPF)" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">KeplerTargetPixelFile</span><span class="o">.</span><span class="n">from_archive</span><span class="p">(</span><span class="s1">&#39;210698281&#39;</span><span class="p">,</span> <span class="n">campaign</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Define-a-new-interact-routine-including-pixel-selection-for-the-mask">
+<h2>Define a new interact routine including pixel selection for the mask<a class="headerlink" href="#Define-a-new-interact-routine-including-pixel-selection-for-the-mask" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [109]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>lc=tpf.to_lightcurve()
+
+&quot;&quot;&quot;
+Interact with a linked target pixel file and lightcurve
+
+Parameters
+----------
+lc : an optional user-supplied pre-processed lightcurve for this target
+
+Returns
+-------
+ax : matplotlib.axes._subplots.AxesSubplot
+    The matplotlib axes object.
+&quot;&quot;&quot;
+try:
+    from ipywidgets import interact
+    import ipywidgets as widgets
+    from bokeh.io import push_notebook, show, output_notebook
+    from bokeh.plotting import figure, ColumnDataSource
+    from bokeh.models import Span
+    from bokeh.models import LogColorMapper
+    from bokeh.layouts import row, column
+    from bokeh.themes import Theme
+    from bokeh.models.tools import HoverTool, PointDrawTool
+    from bokeh.models.widgets import Button
+    output_notebook()
+except ImportError:
+    raise ImportError(&#39;The quicklook tool requires Bokeh and ipywidgets.  See the Installation Guide.&#39;)
+
+if lc is None:
+    lc = tpf.to_lightcurve()
+
+source = ColumnDataSource(data=dict(
+    time=lc.time, flux=lc.flux,
+    cadence=lc.cadenceno,
+    quality=lc.quality))
+
+title = &quot;Quicklook lightcurve for {} target {}&quot;.format(tpf.mission, tpf.keplerid)
+p = figure(title=title, plot_height=300, plot_width=600, tools=&quot;tap,pan,wheel_zoom,box_zoom,reset&quot;)#, theme=theme)
+p.yaxis.axis_label = &#39;Normalized Flux&#39;
+p.xaxis.axis_label = &#39;Time - 2454833 (days)&#39;
+p.step(&#39;time&#39;, &#39;flux&#39;, line_width=1, color=&#39;gray&#39;, source=source, nonselection_line_color=&#39;gray&#39;)
+
+r = p.circle(&#39;time&#39;, &#39;flux&#39;, source=source, fill_alpha=0.3, size=8,line_color=None,
+             selection_color=&quot;firebrick&quot;, nonselection_fill_alpha=0.0,
+             nonselection_fill_color=&quot;grey&quot;,nonselection_line_color=None,
+             nonselection_line_alpha=0.0, fill_color=None,
+             hover_fill_color=&quot;firebrick&quot;,hover_alpha=0.9,hover_line_color=&quot;white&quot;)
+
+p.add_tools(HoverTool(tooltips=[(&quot;index&quot;, &quot;$index&quot;),
+                                (&quot;cadence&quot;, &quot;@cadence&quot;),
+                                (&quot;time&quot;, &quot;@time{0,0.000}&quot;),
+                                (&quot;flux&quot;, &quot;@flux&quot;),
+                                (&quot;quality&quot;, &quot;@quality&quot;)],
+                      renderers=[r], mode=&#39;mouse&#39;, point_policy=&quot;snap_to_data&quot;))
+
+vert = Span(location=800, dimension=&#39;height&#39;, line_color=&#39;firebrick&#39;, line_width=4, line_alpha=0.5)
+p.add_layout(vert)
+s2 = figure(plot_width=300, plot_height=300, title=&#39;Target Pixel File&#39;, tools=&#39;tap, box_zoom, reset&#39;)
+s2.yaxis.axis_label = &#39;Pixel Row Number&#39;
+s2.xaxis.axis_label = &#39;Pixel Column Number&#39;
+
+pedestal = np.nanmin(tpf.flux)
+vlo, lo, med, hi, vhi = np.fix(np.nanpercentile(tpf.flux-pedestal, [0.2, 1, 50, 95, 99.8]))
+color_mapper = LogColorMapper(palette=&quot;Viridis256&quot;, low=lo, high=hi)
+
+s2_dat = s2.image([pedestal+tpf.flux[0,:,:]], x=tpf.column, y=tpf.row,
+                  dw=tpf.shape[2], dh=tpf.shape[1], dilate=True,
+                  color_mapper=color_mapper)
+
+source2 = ColumnDataSource(data=dict(xx=x_vals+0.5, yy=y_vals+0.5))
+r1 = s2.rect(&#39;xx&#39;, &#39;yy&#39;, 1, 1, source=source2, fill_color=&#39;gray&#39;, fill_alpha=0.4, line_color=&#39;white&#39;)
+ptool = PointDrawTool(renderers=[r1])
+s2.add_tools(ptool)
+s2.toolbar.active_tap = ptool
+
+
+def my_text_input_handler(attr, old, new):
+    print(&quot;X&quot;)!
+    pdated label: &quot; + new)
+
+
+ptool.on_change(&quot;value&quot;, my_text_input_handler)
+
+
+#button = Button(label=&quot;Foo&quot;, button_type=&quot;success&quot;)
+#def my_button_handler(new):
+#    print(&#39;Button option &#39; + str(new) + &#39; selected.&#39;)
+
+#button.on_click(my_button_handler)
+
+
+def update(f, v):
+    vert.update(location=tpf.time[f])
+    s2_dat.data_source.data[&#39;image&#39;] = [tpf.flux[f,:,:]]
+    s2_dat.glyph.color_mapper.high = v[1]
+    s2_dat.glyph.color_mapper.low = v[0]
+    push_notebook()
+
+show(row(p, s2), notebook_handle=True)
+n_cad, nx, ny = tpf.flux.shape
+
+play = widgets.Play(
+    interval=10,
+    value=9,
+    min=0,
+    max=n_cad-1,
+    step=1,
+    description=&quot;Press play&quot;,
+    disabled=False)
+
+
+wbutton = widgets.Button(
+    description=&#39;Click me&#39;,
+    disabled=False,
+    button_style=&#39;&#39;, # &#39;success&#39;, &#39;info&#39;, &#39;warning&#39;, &#39;danger&#39; or &#39;&#39;
+    icon=&#39;check&#39;)
+def on_button_clicked(b):
+    bool_mask = tpf.pipeline_mask*False
+    for xi, yi in zip(r1.data_source.data[&#39;xx&#39;], r1.data_source.data[&#39;yy&#39;]):
+        xc = np.int(np.round(xi-0.5)-tpf.column)
+        yc = np.int(np.round(yi-0.5)-tpf.row)
+        bool_mask[xc, yc] = True
+        print(xi, yi, xc, yc)
+    source.data[&#39;flux&#39;] = tpf.to_lightcurve(aperture_mask=bool_mask).flux
+    print(&#39;click&#39;, bool_mask.sum())
+
+    print(&#39;glyph&#39;, vars(r1.glyph))
+    print(&#39;data_source&#39;, vars(r1.data_source))
+    print(&#39;selected&#39;, vars(r1.data_source.selected))
+
+wbutton.on_click(on_button_clicked)
+
+f_slider = widgets.IntSlider(min=0,max=n_cad-1,step=1,value=5,
+                             layout=widgets.Layout(width=&#39;40%&#39;, height=&#39;20px&#39;))
+
+vstep = np.round((hi-lo)/300.0, 1)
+
+v_slider = widgets.FloatRangeSlider(value=[lo, hi],
+                                    min=0,
+                                    max=hi,
+                                    step=vstep,
+                                    description=&#39;v:&#39;,
+                                    continuous_update=False,
+                                    layout=widgets.Layout(width=&#39;30%&#39;, height=&#39;20px&#39;))
+
+widgets.jslink((play, &#39;value&#39;), (f_slider, &#39;value&#39;))
+ui = widgets.HBox([play, f_slider, v_slider, wbutton])
+out = widgets.interactive_output(update, {&#39;f&#39;: f_slider, &#39;v&#39;:v_slider})
+display(ui, out)
+
+#return p
+
+xx=tpf.column + np.arange(tpf.shape[2])
+yy=tpf.row + np.arange(tpf.shape[1])
+x, y = np.meshgrid(xx, yy)
+x_vals, y_vals = x[tpf.pipeline_mask], y[tpf.pipeline_mask]
+x_vals = x_vals[1:2]
+y_vals = y_vals[1:2]
+print(x_vals)
+print(y_vals)
+out = interact(tpf)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="bk-root">
+    <a href="https://bokeh.pydata.org" target="_blank" class="bk-logo bk-logo-small bk-logo-notebook"></a>
+    <span id="692afd4a-3917-48e6-bc7c-fe6cdac0e6af">Loading BokehJS ...</span>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  var force = true;
+
+  if (typeof (root._bokeh_onload_callbacks) === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+  var JS_MIME_TYPE = 'application/javascript';
+  var HTML_MIME_TYPE = 'text/html';
+  var EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  var CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    var script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    var cell = handle.cell;
+
+    var id = cell.output_area._bokeh_element_id;
+    var server_id = cell.output_area._bokeh_server_id;
+    // Clean up Bokeh references
+    if (id != null && id in Bokeh.index) {
+      Bokeh.index[id].model.document.clear();
+      delete Bokeh.index[id];
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      var cmd = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd, {
+        iopub: {
+          output: function(msg) {
+            var id = msg.content.text.trim();
+            if (id in Bokeh.index) {
+              Bokeh.index[id].model.document.clear();
+              delete Bokeh.index[id];
+            }
+          }
+        }
+      });
+      // Destroy server and session
+      var cmd = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    var output_area = handle.output_area;
+    var output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!output.data.hasOwnProperty(EXEC_MIME_TYPE))) {
+      return
+    }
+
+    var toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      var bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      var script_attrs = bk_div.children[0].attributes;
+      for (var i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      var toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      var props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    var events = require('base/js/events');
+    var OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+
+
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  var NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded() {
+    var el = document.getElementById("692afd4a-3917-48e6-bc7c-fe6cdac0e6af");
+    if (el != null) {
+      el.textContent = "BokehJS is loading...";
+    }
+    if (root.Bokeh !== undefined) {
+      if (el != null) {
+        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(display_loaded, 100)
+    }
+  }
+
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) { callback() });
+    }
+    finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.info("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(js_urls, callback) {
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.log("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.log("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = js_urls.length;
+    for (var i = 0; i < js_urls.length; i++) {
+      var url = js_urls[i];
+      var s = document.createElement('script');
+      s.src = url;
+      s.async = false;
+      s.onreadystatechange = s.onload = function() {
+        root._bokeh_is_loading--;
+        if (root._bokeh_is_loading === 0) {
+          console.log("Bokeh: all BokehJS libraries loaded");
+          run_callbacks()
+        }
+      };
+      s.onerror = function() {
+        console.warn("failed to load library " + url);
+      };
+      console.log("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.getElementsByTagName("head")[0].appendChild(s);
+    }
+  };var element = document.getElementById("692afd4a-3917-48e6-bc7c-fe6cdac0e6af");
+  if (element == null) {
+    console.log("Bokeh: ERROR: autoload.js configured with elementid '692afd4a-3917-48e6-bc7c-fe6cdac0e6af' but no matching script tag was found. ")
+    return false;
+  }
+
+  var js_urls = ["https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-gl-0.13.0.min.js"];
+
+  var inline_js = [
+    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+
+    function(Bokeh) {
+
+    },
+    function(Bokeh) {
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-0.13.0.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-widgets-0.13.0.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-tables-0.13.0.min.css");
+    }
+  ];
+
+  function run_inline_js() {
+
+    if ((root.Bokeh !== undefined) || (force === true)) {
+      for (var i = 0; i < inline_js.length; i++) {
+        inline_js[i].call(root, root.Bokeh);
+      }if (force === true) {
+        display_loaded();
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      var cell = $(document.getElementById("692afd4a-3917-48e6-bc7c-fe6cdac0e6af")).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.log("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(js_urls, function() {
+      console.log("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-109-ee72b73cc7f0&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>
+<span class="ansi-green-fg">---&gt; 83</span><span class="ansi-red-fg"> </span>ptool<span class="ansi-blue-fg">.</span>on_change<span class="ansi-blue-fg">(</span>my_text_input_handler<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     84</span>
+<span class="ansi-green-intense-fg ansi-bold">     85</span>
+
+<span class="ansi-green-fg">~/anaconda/lib/python3.5/site-packages/bokeh/model.py</span> in <span class="ansi-cyan-fg">on_change</span><span class="ansi-blue-fg">(self, attr, *callbacks)</span>
+<span class="ansi-green-intense-fg ansi-bold">    420</span>         &#39;&#39;&#39;
+<span class="ansi-green-intense-fg ansi-bold">    421</span>         <span class="ansi-green-fg">if</span> attr <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">in</span> self<span class="ansi-blue-fg">.</span>properties<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">--&gt; 422</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> ValueError<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;attempted to add a callback on nonexistent %s.%s property&#34;</span> <span class="ansi-blue-fg">%</span> <span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>__class__<span class="ansi-blue-fg">.</span>__name__<span class="ansi-blue-fg">,</span> attr<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    423</span>         super<span class="ansi-blue-fg">(</span>Model<span class="ansi-blue-fg">,</span> self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>on_change<span class="ansi-blue-fg">(</span>attr<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>callbacks<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    424</span>
+
+<span class="ansi-red-fg">ValueError</span>: attempted to add a callback on nonexistent PointDrawTool.&lt;function my_text_input_handler at 0x104367d90&gt; property
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [67]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [68]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[492 489 490 491]
+[469 470 470 470]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Test-the-new-interact-tools">
+<h2>Test the new interact tools<a class="headerlink" href="#Test-the-new-interact-tools" title="Permalink to this headline">¶</a></h2>
+<p>Delete pixel boxes by while clicking the box, then press ‘delete’ while
+your cursor is still hovering over the image.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [106]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">r1</span><span class="o">.</span><span class="n">data_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">include_defaults</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[106]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>{&#39;id&#39;: &#39;f6b70e09-417e-4e4f-8449-4bf54e82d3f4&#39;,
+ &#39;indices&#39;: [],
+ &#39;js_event_callbacks&#39;: {},
+ &#39;js_property_callbacks&#39;: {},
+ &#39;line_indices&#39;: [],
+ &#39;multiline_indices&#39;: {},
+ &#39;name&#39;: None,
+ &#39;subscribed_events&#39;: [],
+ &#39;tags&#39;: []}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Below-this-is-stuff-for-cleaning-lightcurves…">
+<h2>Below this is stuff for cleaning lightcurves…<a class="headerlink" href="#Below-this-is-stuff-for-cleaning-lightcurves…" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [89]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_sff</span> <span class="o">=</span> <span class="n">lc_cln</span><span class="o">.</span><span class="n">correct</span><span class="p">(</span><span class="n">restore_trend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-89-9bcab1425dcb&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>lc_sff <span class="ansi-blue-fg">=</span> lc_cln<span class="ansi-blue-fg">.</span>correct<span class="ansi-blue-fg">(</span>restore_trend<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;lc_cln&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [90]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_cln</span> <span class="o">=</span> <span class="n">my_custom_lc_cleaner</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">cleaning</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-90-ca263ea45343&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>lc_cln <span class="ansi-blue-fg">=</span> my_custom_lc_cleaner<span class="ansi-blue-fg">(</span>tpf<span class="ansi-blue-fg">,</span> cleaning<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#39;best&#39;</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;my_custom_lc_cleaner&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">my_custom_lc_cleaner</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">cleaning</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Returns a clean lightcurve given an input tpf&#39;&#39;&#39;</span>
+
+    <span class="n">nan_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">empty_mask</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">pipeline_mask</span> <span class="o">*</span> <span class="kc">False</span>
+    <span class="n">aper_mask</span> <span class="o">=</span> <span class="n">empty_mask</span>
+    <span class="n">aper_mask</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">back_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">aper_mask</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">nan_mask</span>
+
+    <span class="n">lc_aper</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aper_mask</span><span class="p">)</span><span class="o">/</span><span class="n">aper_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">lc_back</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">back_mask</span><span class="p">)</span><span class="o">/</span><span class="n">back_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="n">lc_bg_sub</span> <span class="o">=</span> <span class="n">lc_aper</span> <span class="o">-</span> <span class="n">lc_back</span><span class="o">.</span><span class="n">flux</span>
+
+    <span class="c1"># Flag outliers</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">outliers1</span> <span class="o">=</span> <span class="n">lc_aper</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="n">return_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">outliers2</span> <span class="o">=</span> <span class="n">lc_back</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="n">return_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">outliers3</span> <span class="o">=</span> <span class="n">lc_aper</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="n">return_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">outlier_dict</span><span class="o">=</span> <span class="p">{</span><span class="s1">&#39;none&#39;</span><span class="p">:</span> <span class="n">outliers1</span><span class="o">*</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="s1">&#39;safe&#39;</span><span class="p">:(</span><span class="n">tpf</span><span class="o">.</span><span class="n">quality</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">),</span>
+                   <span class="s1">&#39;soft&#39;</span><span class="p">:</span> <span class="n">outliers1</span><span class="p">,</span>
+                   <span class="s1">&#39;medium&#39;</span><span class="p">:(</span><span class="n">outliers1</span> <span class="o">|</span> <span class="n">outliers2</span><span class="p">),</span>
+                   <span class="s1">&#39;best&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">outliers1</span> <span class="o">|</span> <span class="n">outliers2</span> <span class="o">|</span> <span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">quality</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)),</span>
+                   <span class="s1">&#39;aggressive&#39;</span><span class="p">:(</span><span class="n">outliers1</span> <span class="o">|</span> <span class="n">outliers2</span> <span class="o">|</span> <span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">quality</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">|</span> <span class="n">outliers3</span><span class="p">)}</span>
+
+    <span class="n">outliers</span> <span class="o">=</span> <span class="n">outlier_dict</span><span class="p">[</span><span class="n">cleaning</span><span class="p">]</span>
+
+    <span class="n">lc_cln</span> <span class="o">=</span> <span class="n">lc_bg_sub</span><span class="p">[</span><span class="o">~</span><span class="n">outliers</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">lc_cln</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">lc_cln</span> <span class="o">=</span> <span class="n">my_custom_lc_cleaner</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">cleaning</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright lightkurve developers and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

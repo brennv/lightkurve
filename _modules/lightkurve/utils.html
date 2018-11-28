@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lightkurve.utils &mdash; lightkurve 1.0b22 documentation</title>
+  <title>lightkurve.utils &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -182,7 +183,8 @@
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;KeplerQualityFlags&#39;</span><span class="p">,</span> <span class="s1">&#39;TessQualityFlags&#39;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LightkurveWarning&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;KeplerQualityFlags&#39;</span><span class="p">,</span> <span class="s1">&#39;TessQualityFlags&#39;</span><span class="p">,</span>
            <span class="s1">&#39;bkjd_to_astropy_time&#39;</span><span class="p">,</span> <span class="s1">&#39;btjd_to_astropy_time&#39;</span><span class="p">,</span>
            <span class="s1">&#39;channel_to_module_output&#39;</span><span class="p">,</span> <span class="s1">&#39;module_output_to_channel&#39;</span><span class="p">,</span>
            <span class="s1">&#39;running_mean&#39;</span><span class="p">]</span>
@@ -602,9 +604,9 @@
     <span class="k">return</span> <span class="n">ax</span>
 
 
-<span class="k">class</span> <span class="nc">LightkurveWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
+<div class="viewcode-block" id="LightkurveWarning"><a class="viewcode-back" href="../../api/lightkurve.utils.LightkurveWarning.html#lightkurve.utils.LightkurveWarning">[docs]</a><span class="k">class</span> <span class="nc">LightkurveWarning</span><span class="p">(</span><span class="ne">Warning</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class for all Lightkurve warnings.&quot;&quot;&quot;</span>
-    <span class="k">pass</span>
+    <span class="k">pass</span></div>
 
 
 <span class="k">def</span> <span class="nf">suppress_stdout</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -621,6 +623,58 @@
             <span class="k">finally</span><span class="p">:</span>
                 <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">old_out</span>
     <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="k">def</span> <span class="nf">detect_filetype</span><span class="p">(</span><span class="n">header</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns Kepler and TESS file types given their primary header.</span>
+
+<span class="sd">    This function will detect the file type by looking at both the TELESCOP and</span>
+<span class="sd">    CREATOR keywords in the first extension of the FITS header. If the file is</span>
+<span class="sd">    recognized as a Kepler or TESS data product, one of the following strings</span>
+<span class="sd">    will be returned:</span>
+
+<span class="sd">        * `&#39;KeplerTargetPixelFile&#39;`</span>
+<span class="sd">        * `&#39;TessTargetPixelFile&#39;`</span>
+<span class="sd">        * `&#39;KeplerLightCurveFile&#39;`</span>
+<span class="sd">        * `&#39;TessLightCurveFile&#39;`</span>
+
+<span class="sd">    If the file is not recognized as a Kepler or TESS data product, then</span>
+<span class="sd">    `None` will be returned.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    header : astropy.io.fits.Header object</span>
+<span class="sd">        The primary header of a FITS file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    filetype : str or None</span>
+<span class="sd">        A string describing the detected filetype. If the filetype is not</span>
+<span class="sd">        recognized, `None` will be returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># use `telescop` keyword to determine mission</span>
+        <span class="c1"># and `creator` to determine tpf or lc</span>
+        <span class="n">telescop</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;telescop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">creator</span> <span class="o">=</span> <span class="n">header</span><span class="p">[</span><span class="s1">&#39;creator&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">telescop</span> <span class="o">==</span> <span class="s1">&#39;kepler&#39;</span><span class="p">:</span>
+            <span class="c1"># Kepler TPFs will contain &quot;TargetPixelExporterPipelineModule&quot;</span>
+            <span class="k">if</span> <span class="s1">&#39;targetpixel&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;KeplerTargetPixelFile&#39;</span>
+            <span class="c1"># Kepler LCFs will contain &quot;FluxExporter2PipelineModule&quot;</span>
+            <span class="k">elif</span> <span class="s1">&#39;fluxexporter&#39;</span> <span class="ow">in</span> <span class="n">creator</span> <span class="ow">or</span> <span class="s1">&#39;lightcurve&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;KeplerLightCurveFile&#39;</span>
+        <span class="k">elif</span> <span class="n">telescop</span> <span class="o">==</span> <span class="s1">&#39;tess&#39;</span><span class="p">:</span>
+            <span class="c1"># TESS TPFs will contain &quot;TargetPixelExporterPipelineModule&quot;</span>
+            <span class="k">if</span> <span class="s1">&#39;targetpixel&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;TessTargetPixelFile&#39;</span>
+            <span class="c1"># TESS LCFs will contain &quot;LightCurveExporterPipelineModule&quot;</span>
+            <span class="k">elif</span> <span class="s1">&#39;lightcurve&#39;</span> <span class="ow">in</span> <span class="n">creator</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s1">&#39;TessLightCurveFile&#39;</span>
+    <span class="c1"># If the TELESCOP or CREATOR keywords don&#39;t exist we expect a KeyError;</span>
+    <span class="c1"># if one of them is Undefined we expect `.lower()` to yield an AttributeError.</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 
            </div>
@@ -633,7 +687,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -652,21 +706,14 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

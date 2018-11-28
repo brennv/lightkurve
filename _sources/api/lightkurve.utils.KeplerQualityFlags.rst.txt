@@ -40,7 +40,6 @@ KeplerQualityFlags
 
    .. autosummary::
 
-      ~KeplerQualityFlags.create_quality_mask
       ~KeplerQualityFlags.decode
 
    .. rubric:: Attributes Documentation
@@ -73,5 +72,4 @@ KeplerQualityFlags
 
    .. rubric:: Methods Documentation
 
-   .. automethod:: create_quality_mask
    .. automethod:: decode

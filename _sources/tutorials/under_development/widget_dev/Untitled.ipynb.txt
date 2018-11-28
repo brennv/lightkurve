@@ -1,0 +1,85 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "--2018-08-22 11:37:49--  https://raw.githubusercontent.com/bokeh/bokeh/master/examples/howto/server_embed/notebook_embed.ipynb\n",
+      "Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.200.133\n",
+      "Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.200.133|:443... connected.\n",
+      "HTTP request sent, awaiting response... \n",
+      "  HTTP/1.1 200 OK\n",
+      "  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox\n",
+      "  Strict-Transport-Security: max-age=31536000\n",
+      "  X-Content-Type-Options: nosniff\n",
+      "  X-Frame-Options: deny\n",
+      "  X-XSS-Protection: 1; mode=block\n",
+      "  ETag: \"891835fce63c1bae120adbc38d2bbbc1989f6bdb\"\n",
+      "  Content-Type: text/plain; charset=utf-8\n",
+      "  Cache-Control: max-age=300\n",
+      "  X-Geo-Block-List:\n",
+      "  X-GitHub-Request-Id: 6930:4CE9:8F0B:99B7:5B7DAD74\n",
+      "  Content-Length: 3775\n",
+      "  Accept-Ranges: bytes\n",
+      "  Date: Wed, 22 Aug 2018 18:37:50 GMT\n",
+      "  Via: 1.1 varnish\n",
+      "  Connection: keep-alive\n",
+      "  X-Served-By: cache-dca17723-DCA\n",
+      "  X-Cache: HIT\n",
+      "  X-Cache-Hits: 1\n",
+      "  X-Timer: S1534963070.022844,VS0,VE1\n",
+      "  Vary: Authorization,Accept-Encoding\n",
+      "  Access-Control-Allow-Origin: *\n",
+      "  X-Fastly-Request-ID: f1891abc6a30e5a2bea23ef56f5684cd159b4c1b\n",
+      "  Expires: Wed, 22 Aug 2018 18:42:50 GMT\n",
+      "  Source-Age: 9\n",
+      "Length: 3775 (3.7K) [text/plain]\n",
+      "Saving to: ‘notebook_embed.ipynb’\n",
+      "\n",
+      "notebook_embed.ipyn 100%[===================>]   3.69K  --.-KB/s    in 0s      \n",
+      "\n",
+      "Last-modified header missing -- time-stamps turned off.\n",
+      "2018-08-22 11:37:50 (24.3 MB/s) - ‘notebook_embed.ipynb’ saved [3775/3775]\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "! wget https://raw.githubusercontent.com/bokeh/bokeh/master/examples/howto/server_embed/notebook_embed.ipynb"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

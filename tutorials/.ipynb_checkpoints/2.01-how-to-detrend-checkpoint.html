@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>How to remove K2 motion systematics with SFF? &mdash; lightkurve 1.0b22 documentation</title>
+  <title>How to remove K2 motion systematics with SFF &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -147,7 +148,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li>How to remove K2 motion systematics with SFF?</li>
+      <li>How to remove K2 motion systematics with SFF</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -349,8 +350,8 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="How-to-remove-K2-motion-systematics-with-SFF?">
-<h1>How to remove K2 motion systematics with SFF?<a class="headerlink" href="#How-to-remove-K2-motion-systematics-with-SFF?" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="How-to-remove-K2-motion-systematics-with-SFF">
+<h1>How to remove K2 motion systematics with SFF<a class="headerlink" href="#How-to-remove-K2-motion-systematics-with-SFF" title="Permalink to this headline">¶</a></h1>
 <p>You can use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> to remove the motion from K2 data. Targets in
 K2 data move over multiple pixels during the exposure due to thruster
 firings. This can be corrected using the self flat fielding method
@@ -363,15 +364,16 @@ for light curves.</p>
 for K2 data, we can use the same Kepler functions
 <code class="docutils literal notranslate"><span class="pre">KeplerTargetPixelFile</span></code> and <code class="docutils literal notranslate"><span class="pre">KeplerLightCurveFile</span></code> as they are the
 same instrument.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">lightkurve</span> <span class="k">import</span> <span class="n">search_lightcurvefile</span>
-<span class="n">lcf</span> <span class="o">=</span> <span class="n">search_lightcurvefile</span><span class="p">(</span><span class="mi">247887989</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>  <span class="c1"># returns a KeplerLightCurveFile</span>
-<span class="n">lc</span> <span class="o">=</span> <span class="n">lcf</span><span class="o">.</span><span class="n">PDCSAP_FLUX</span>                               <span class="c1"># returns a KeplerLightCurve</span>
+<span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span> <span class="nn">lightkurve</span> <span class="k">import</span> <span class="n">KeplerLightCurveFile</span>
+<span class="n">lcf</span> <span class="o">=</span> <span class="n">KeplerLightCurveFile</span><span class="o">.</span><span class="n">from_archive</span><span class="p">(</span><span class="mi">247887989</span><span class="p">)</span>   <span class="c1">#KeplerLightCurveFile</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">lcf</span><span class="o">.</span><span class="n">PDCSAP_FLUX</span>                                 <span class="c1">#KeplerLightCurve</span>
 
 <span class="c1">#Remove nans and outliers</span>
 <span class="n">lc</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">remove_nans</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">()</span>
@@ -381,21 +383,13 @@ same instrument.</p>
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Downloading URL https://mast.stsci.edu/api/v0/download/file?uri=mast:K2/url/missions/k2/lightcurves/c13/247800000/87000/ktwo247887989-c13_llc.fits to /home/gb/.lightkurve-cache/mastDownload/K2/ktwo247887989-c13_lc/ktwo247887989-c13_llc.fits ... [Done]
-</pre></div></div>
-</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">();</span>
+<span></span><span class="n">lc</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -416,7 +410,7 @@ to see what it looks like.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">3.0712</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">();</span>
+<span></span><span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">3.0712</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -445,7 +439,7 @@ algorithm is run independently in each window.</li>
 <p>This <a class="reference external" href="gully-tutorial">tutorial</a> will teach you more about how to tune
 these parameters. For this problem, we will use the defaults, but
 increase the number of windows to 20.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [4]:
 </pre></div>
@@ -455,6 +449,14 @@ increase the number of windows to 20.</p>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="stderr output_area docutils container">
+<div class="highlight"><pre>
+100%|██████████| 20/20 [00:00&lt;00:00, 37.02it/s]
+</pre></div></div>
+</div>
 <p>Now when we compare the two light curves we can see the clear signal
 from the exoplanet.</p>
 <div class="nbinput docutils container">
@@ -463,8 +465,8 @@ from the exoplanet.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">3.0712</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;With Motion&#39;</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">corr_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">3.0712</span><span class="p">)</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Motion Corrected&#39;</span><span class="p">);</span>
+<span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">3.0712</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;With Motion&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">corr_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">3.0712</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C3&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Motion Corrected&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -488,7 +490,7 @@ from the exoplanet.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -507,21 +509,14 @@ from the exoplanet.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

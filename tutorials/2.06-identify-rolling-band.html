@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>How to identify time-variable background noise (“rolling bands”)? &mdash; lightkurve 1.0b22 documentation</title>
+  <title>How to identify time-variable background noise (“rolling bands”)? &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Contributing and reporting issues" href="../contributing.html" />
@@ -61,7 +62,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -361,8 +362,8 @@ div.nboutput div.output_area.stderr {
     margin-right: 4px;  /* make room for the exclamation icon */
 }
 </style>
-<div class="section" id="How-to-identify-time-variable-background-noise-(&quot;rolling-bands&quot;)?">
-<h1>How to identify time-variable background noise (“rolling bands”)?<a class="headerlink" href="#How-to-identify-time-variable-background-noise-("rolling-bands")?" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="How-to-identify-time-variable-background-noise-(“rolling-bands”)?">
+<h1>How to identify time-variable background noise (“rolling bands”)?<a class="headerlink" href="#How-to-identify-time-variable-background-noise-(“rolling-bands”)?" title="Permalink to this headline">¶</a></h1>
 <p>In the previous tutorial we looked at making custom apertures to check
 planet signals. In this tutorial we will use the same technique to find
 variable background (such as rolling band signal) in Kepler data.</p>
@@ -375,9 +376,7 @@ Handbook</a>.
 An example of the rolling band artifact is shown in the video below. You
 can see the band move through the superstamp at the 2 second mark,
 leaving the bottom of the screen at the 6 second mark.</p>
-<div class="figure">
-<img alt="" src="../_images/rollingband.gif" />
-</div>
+<p><img alt="image0" src="../_images/rollingband.gif" /></p>
 <p>The rolling band artifact is small, up to about 20 counts per pixel.
 However, this can add up for large apertures containing many pixels or
 for faint, quiet targets.</p>
@@ -650,7 +649,7 @@ different tutorial.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -669,21 +668,14 @@ different tutorial.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

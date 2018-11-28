@@ -1,0 +1,1675 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; lightkurve 1.0b23.dev documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> lightkurve
+          
+
+          
+            
+            <img src="../_static/lightkurve.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0b23.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="section1.html">Introduction to lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="section2.html">Science with lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="section3.html">Extracting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="section4.html">Systematics correction</a></li>
+</ul>
+<p class="caption"><span class="caption-text">About lightkurve</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributing and reporting issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developer documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing and acknowledging lightkurve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other_software.html">Other software</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">lightkurve</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/Untitled5.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput,
+div.nbinput div.prompt,
+div.nbinput div.input_area,
+div.nbinput div[class*=highlight],
+div.nbinput div[class*=highlight] pre,
+div.nboutput,
+div.nbinput div.prompt,
+div.nbinput div.output_area,
+div.nboutput div[class*=highlight],
+div.nboutput div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput,
+div.nboutput {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput,
+    div.nboutput {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput div.prompt pre {
+    color: #303F9F;
+}
+
+/* output prompt */
+div.nboutput div.prompt pre {
+    color: #D84315;
+}
+
+/* all prompts */
+div.nbinput div.prompt,
+div.nboutput div.prompt {
+    min-width: 8ex;
+    padding-top: 0.4em;
+    padding-right: 0.4em;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput div.prompt,
+    div.nboutput div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput div.prompt pre,
+div.nboutput div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput div.input_area,
+div.nboutput div.output_area {
+    padding: 0.4em;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput div.input_area,
+    div.nboutput div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput div.input_area {
+    border: 1px solid #cfcfcf;
+    border-radius: 2px;
+    background: #f7f7f7;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.pngmath center alignment in output cells */
+div.nboutput div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast,
+.nboutput.nblast {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast + .nbinput {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+</style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">lightkurve</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">lightkurve</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;HL Tau&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">lightkurve.interact</span> <span class="k">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf</span><span class="o">.</span><span class="n">interact</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  var force = true;
+
+  if (typeof (root._bokeh_onload_callbacks) === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+  var JS_MIME_TYPE = 'application/javascript';
+  var HTML_MIME_TYPE = 'text/html';
+  var EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  var CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    var script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    var cell = handle.cell;
+
+    var id = cell.output_area._bokeh_element_id;
+    var server_id = cell.output_area._bokeh_server_id;
+    // Clean up Bokeh references
+    if (id != null && id in Bokeh.index) {
+      Bokeh.index[id].model.document.clear();
+      delete Bokeh.index[id];
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      var cmd = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd, {
+        iopub: {
+          output: function(msg) {
+            var id = msg.content.text.trim();
+            if (id in Bokeh.index) {
+              Bokeh.index[id].model.document.clear();
+              delete Bokeh.index[id];
+            }
+          }
+        }
+      });
+      // Destroy server and session
+      var cmd = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    var output_area = handle.output_area;
+    var output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!output.data.hasOwnProperty(EXEC_MIME_TYPE))) {
+      return
+    }
+
+    var toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      var bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      var script_attrs = bk_div.children[0].attributes;
+      for (var i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      var toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      var props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    var events = require('base/js/events');
+    var OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+
+
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  var NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded() {
+    var el = document.getElementById(null);
+    if (el != null) {
+      el.textContent = "BokehJS is loading...";
+    }
+    if (root.Bokeh !== undefined) {
+      if (el != null) {
+        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(display_loaded, 100)
+    }
+  }
+
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) { callback() });
+    }
+    finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.info("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(js_urls, callback) {
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.log("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.log("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = js_urls.length;
+    for (var i = 0; i < js_urls.length; i++) {
+      var url = js_urls[i];
+      var s = document.createElement('script');
+      s.src = url;
+      s.async = false;
+      s.onreadystatechange = s.onload = function() {
+        root._bokeh_is_loading--;
+        if (root._bokeh_is_loading === 0) {
+          console.log("Bokeh: all BokehJS libraries loaded");
+          run_callbacks()
+        }
+      };
+      s.onerror = function() {
+        console.warn("failed to load library " + url);
+      };
+      console.log("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.getElementsByTagName("head")[0].appendChild(s);
+    }
+  };
+
+  var js_urls = ["https://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-gl-1.0.1.min.js"];
+
+  var inline_js = [
+    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+
+    function(Bokeh) {
+
+    },
+    function(Bokeh) {
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.css");
+    }
+  ];
+
+  function run_inline_js() {
+
+    if ((root.Bokeh !== undefined) || (force === true)) {
+      for (var i = 0; i < inline_js.length; i++) {
+        inline_js[i].call(root, root.Bokeh);
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      var cell = $(document.getElementById(null)).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.log("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(js_urls, function() {
+      console.log("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script src="http://localhost:63313/autoload.js?bokeh-autoload-element=5138&bokeh-absolute-url=http://localhost:63313&resources=none" id="5138"></script></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">!</span> ls -tl
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+total 143488
+-rw-r--r--   1 obsidian  staff    115200 Nov 20 14:44 ktwo210690913-c13_lpd-targ-custom-lc.fits
+-rw-r--r--   1 obsidian  staff     64943 Nov 20 14:44 Untitled5.ipynb
+-rw-r--r--   1 obsidian  staff     17299 Nov 19 15:26 Untitled4.ipynb
+-rw-r--r--   1 obsidian  staff     53881 Nov 19 15:19 junk.csv
+-rw-r--r--   1 obsidian  staff    916429 Nov 19 15:01 advanced-interact-custom-masks.ipynb
+-rw-r--r--   1 obsidian  staff    115200 Nov 19 13:15 ktwo210690913-c13_lpd-targ-background-mask.fits
+-rw-r--r--   1 obsidian  staff     84492 Nov 19 13:08 quickstart.ipynb
+-rw-r--r--   1 obsidian  staff     27537 Nov 19 13:04 1.05-interact-with-lightcurves-and-tpf.ipynb
+-rw-r--r--   1 obsidian  staff     19127 Nov 13 16:57 Untitled3.ipynb
+-rw-r--r--@  1 obsidian  staff  48355200 Nov 13 16:49 hlsp_tess-data-alerts_tess_phot_00260304296-s02_tess_v1_tp.fits
+drwxr-xr-x  11 obsidian  staff       352 Nov 13 12:33 <span class="ansi-red-intense-fg ansi-bold">motion-correction</span>
+-rw-r--r--   1 obsidian  staff    115200 Nov  8 13:17 ktwo210690913-c13_lpd-background-mask.fits
+-rw-r--r--   1 obsidian  staff    115200 Nov  8 13:12 ktwo210690913-c13_lpd-custom-aperture-mask.fits
+-rw-r--r--   1 obsidian  staff    970236 Nov  8 07:54 how-to-recover-the-first-tess-candidate.ipynb
+-rw-r--r--   1 obsidian  staff     38302 Oct 30 16:33 Untitled2.ipynb
+-rwxr-xr-x   1 obsidian  staff     42899 Oct 29 13:14 <span class="ansi-magenta-fg">cutting-out-tpfs-from-tess-ffis.ipynb</span>
+-rw-r--r--   1 obsidian  staff    330666 Oct 29 13:14 2.10-how-to-make-a-supernova-lightcurve.ipynb
+-rw-r--r--   1 obsidian  staff    725054 Oct 29 13:14 2.09-how-to-use-lightkurve-for-asteroseismology.ipynb
+-rw-r--r--   1 obsidian  staff     81897 Oct 29 13:14 2.08-making-fits-files.ipynb
+-rw-r--r--   1 obsidian  staff    261768 Oct 29 13:14 2.06-identify-rolling-band.ipynb
+-rw-r--r--   1 obsidian  staff    142961 Oct 29 13:14 2.05-making-custom-apertures.ipynb
+-rw-r--r--   1 obsidian  staff    131741 Oct 29 13:14 2.04-removing-cbvs.ipynb
+-rw-r--r--   1 obsidian  staff    181442 Oct 29 13:14 2.03-appending-lightcurves.ipynb
+-rw-r--r--   1 obsidian  staff    271429 Oct 29 13:14 2.02-recover-a-planet.ipynb
+-rw-r--r--   1 obsidian  staff    223305 Oct 29 13:14 2.01-how-to-detrend.ipynb
+-rw-r--r--   1 obsidian  staff    346922 Oct 29 13:14 1.06-using-the-periodogram-class.ipynb
+-rw-r--r--   1 obsidian  staff     82586 Oct 29 13:14 1.04-lightcurve-files.ipynb
+-rw-r--r--   1 obsidian  staff    229335 Oct 29 13:14 1.03-what-are-lightcurves.ipynb
+-rw-r--r--   1 obsidian  staff     93848 Oct 29 13:14 1.02-target-pixel-files.ipynb
+-rw-r--r--   1 obsidian  staff     19476 Oct 25 08:48 Untitled1.ipynb
+-rw-r--r--   1 obsidian  staff   6970195 Oct 15 10:54 Pan-STARRS_C16.ipynb
+-rw-r--r--   1 obsidian  staff   1215503 Oct 12 15:09 xx.xx-Gaussian-process-analysis.ipynb
+-rw-r--r--   1 obsidian  staff     79532 Oct 12 14:26 read_in_K2SFF.ipynb
+-rw-r--r--   1 obsidian  staff    195278 Oct 11 15:40 K2_C16_Pan_STARRS_211691793.png
+-rw-r--r--   1 obsidian  staff       467 Oct  9 17:40 section2.rst
+-rw-r--r--   1 obsidian  staff       573 Oct  9 17:40 section1.rst
+-rw-r--r--   1 obsidian  staff    255964 Oct  4 18:18 TESS_unboxing.ipynb
+-rw-r--r--   1 obsidian  staff        72 Oct  4 11:46 xTESSx.ipynb
+drwxr-xr-x   6 obsidian  staff       192 Oct  4 11:45 <span class="ansi-red-intense-fg ansi-bold">images</span>
+drwxr-xr-x  13 obsidian  staff       416 Sep 20 10:51 <span class="ansi-red-intense-fg ansi-bold">under_development</span>
+-rw-r--r--   1 obsidian  staff     63321 Aug 30 08:45 Untitled.ipynb
+-rw-r--r--   1 obsidian  staff    337632 Aug 27 18:12 2.12-how-to-make-AGN-lightcurve.ipynb
+drwxr-xr-x   5 obsidian  staff       160 Aug 23 10:01 <span class="ansi-red-intense-fg ansi-bold">exploratory_notebooks</span>
+-rw-r--r--   1 obsidian  staff    311649 Aug 22 11:33 2.10-how-to-use-prf-photometry.ipynb
+-rw-r--r--   1 obsidian  staff       349 Aug 21 11:42 section4.rst
+-rw-r--r--   1 obsidian  staff       270 Aug 21 11:42 section3.rst
+-rw-r--r--   1 obsidian  staff   8805553 Jul 17 11:34 rollingband.gif
+drwxr-xr-x   4 obsidian  staff       128 May  4  2018 <span class="ansi-red-intense-fg ansi-bold">__pycache__</span>
+-rw-r--r--   1 obsidian  staff       670 Feb 28  2018 2.07-masking-data.ipynb
+drwxr-xr-x   4 obsidian  staff       128 Feb 28  2018 <span class="ansi-red-intense-fg ansi-bold">mastDownload</span>
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># %load -s show_interact_widget ../../../lightkurve/interact.py</span>
+<span class="k">def</span> <span class="nf">show_interact_widget</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">lc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">notebook_url</span><span class="o">=</span><span class="s1">&#39;localhost:8888&#39;</span><span class="p">,</span> <span class="n">max_cadences</span><span class="o">=</span><span class="mi">30000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display an interactive Jupyter Notebook widget to inspect the pixel data.</span>
+
+<span class="sd">    The widget will show both the lightcurve and pixel data.  The pixel data</span>
+<span class="sd">    supports pixel selection via Bokeh tap and box select tools in an</span>
+<span class="sd">    interactive javascript user interface.</span>
+
+<span class="sd">    Note: at this time, this feature only works inside an active Jupyter</span>
+<span class="sd">    Notebook, and tends to be too slow when more than ~30,000 cadences</span>
+<span class="sd">    are contained in the TPF (e.g. short cadence data).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tpf : lightkurve.TargetPixelFile</span>
+<span class="sd">        Target Pixel File to interact with</span>
+<span class="sd">    notebook_url: str</span>
+<span class="sd">        Location of the Jupyter notebook page (default: &quot;localhost:8888&quot;)</span>
+<span class="sd">        When showing Bokeh applications, the Bokeh server must be</span>
+<span class="sd">        explicitly configured to allow connections originating from</span>
+<span class="sd">        different URLs. This parameter defaults to the standard notebook</span>
+<span class="sd">        host and port. If you are running on a different location, you</span>
+<span class="sd">        will need to supply this value for the application to display</span>
+<span class="sd">        properly. If no protocol is supplied in the URL, e.g. if it is</span>
+<span class="sd">        of the form &quot;localhost:8888&quot;, then &quot;http&quot; will be used.</span>
+<span class="sd">    max_cadences : int</span>
+<span class="sd">        Raise a RuntimeError if the number of cadences shown is larger than</span>
+<span class="sd">        this value. This limit helps keep browsers from becoming unresponsive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">bokeh</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The interact() tool requires the `bokeh` package; &quot;</span>
+                  <span class="s2">&quot;you can install bokeh using e.g. `conda install bokeh`.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">lc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">tpf</span><span class="o">.</span><span class="n">pipeline_mask</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The custom lightcurve provided to interact() does not contain &quot;</span>
+                      <span class="s2">&quot;the same number of cadences (</span><span class="si">{}</span><span class="s2">) as the target pixel file (</span><span class="si">{}</span><span class="s2">).&quot;</span>
+                      <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">n_pixels</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">pixel_index_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_pixels</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># Bokeh cannot handle many data points</span>
+    <span class="c1"># https://github.com/bokeh/bokeh/issues/7490</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_cadences</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Interact cannot display more than </span><span class="si">{}</span><span class="s1"> cadences.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_cadences</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">create_interact_ui</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="c1"># The data source includes metadata for hover-over tooltips</span>
+        <span class="n">lc_source</span> <span class="o">=</span> <span class="n">prepare_lightcurve_datasource</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
+        <span class="n">tpf_source</span> <span class="o">=</span> <span class="n">prepare_tpf_datasource</span><span class="p">(</span><span class="n">tpf</span><span class="p">)</span>
+
+        <span class="c1"># Create the lightcurve figure and its vertical marker</span>
+        <span class="n">fig_lc</span><span class="p">,</span> <span class="n">vertical_line</span> <span class="o">=</span> <span class="n">make_lightcurve_figure_elements</span><span class="p">(</span><span class="n">lc</span><span class="p">,</span> <span class="n">lc_source</span><span class="p">)</span>
+
+        <span class="c1"># Create the TPF figure and its stretch slider</span>
+        <span class="n">pedestal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">)</span>
+        <span class="n">fig_tpf</span><span class="p">,</span> <span class="n">stretch_slider</span> <span class="o">=</span> <span class="n">make_tpf_figure_elements</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">tpf_source</span><span class="p">,</span> <span class="n">pedestal</span><span class="o">=</span><span class="n">pedestal</span><span class="p">)</span>
+
+        <span class="c1"># Helper lookup table which maps cadence number onto flux array index.</span>
+        <span class="n">tpf_index_lookup</span> <span class="o">=</span> <span class="p">{</span><span class="n">cad</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">)}</span>
+
+        <span class="c1"># Interactive slider widgets and buttons to select the cadence number</span>
+        <span class="n">cadence_slider</span> <span class="o">=</span> <span class="n">Slider</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">),</span>
+                                <span class="n">end</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">),</span>
+                                <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">),</span>
+                                <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Cadence Number&quot;</span><span class="p">,</span>
+                                <span class="n">width</span><span class="o">=</span><span class="mi">490</span><span class="p">)</span>
+        <span class="n">r_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">l_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+        <span class="c1">#existing_selection = tpf_source.selected.to_json(True).copy()</span>
+
+        <span class="c1"># Callbacks</span>
+        <span class="k">def</span> <span class="nf">update_upon_pixel_selection</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Callback to take action when pixels are selected.&quot;&quot;&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;old:&quot;</span><span class="p">,</span> <span class="n">old</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;new:&quot;</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
+            <span class="c1"># Check if a selection was &quot;re-clicked&quot;:</span>
+
+            <span class="k">if</span> <span class="p">((</span><span class="nb">sorted</span><span class="p">(</span><span class="n">old</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">new</span> <span class="o">!=</span> <span class="p">[])):</span>
+                <span class="c1"># Trigger recursion</span>
+                <span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">!=</span> <span class="p">[]):</span>
+                <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+                <span class="n">selected_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pixel_index_array</span><span class="p">,</span> <span class="n">selected_indices</span><span class="p">)</span>
+                <span class="n">lc_new</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">selected_mask</span><span class="p">)</span>
+                <span class="n">lc_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lc_new</span><span class="o">.</span><span class="n">flux</span>
+                <span class="n">ylims</span> <span class="o">=</span> <span class="n">get_lightcurve_y_limits</span><span class="p">(</span><span class="n">lc_source</span><span class="p">)</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lc_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">flux</span> <span class="o">*</span> <span class="mf">0.0</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">update_upon_cadence_change</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;Callback to take action when cadence slider changes&#39;&#39;&#39;</span>
+            <span class="k">if</span> <span class="n">new</span> <span class="ow">in</span> <span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">:</span>
+                <span class="n">frameno</span> <span class="o">=</span> <span class="n">tpf_index_lookup</span><span class="p">[</span><span class="n">new</span><span class="p">]</span>
+                <span class="n">fig_tpf</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;tpfimg&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="n">frameno</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                                                                         <span class="o">-</span> <span class="n">pedestal</span><span class="p">]</span>
+                <span class="n">vertical_line</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">frameno</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fig_tpf</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;tpfimg&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">]</span>
+            <span class="n">lc_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">def</span> <span class="nf">go_right_by_one</span><span class="p">():</span>
+            <span class="n">existing_value</span> <span class="o">=</span> <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">existing_value</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">):</span>
+                <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">existing_value</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">go_left_by_one</span><span class="p">():</span>
+            <span class="n">existing_value</span> <span class="o">=</span> <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">existing_value</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">):</span>
+                <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">existing_value</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">jump_to_lightcurve_position</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">new</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">[</span><span class="n">new</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+        <span class="c1"># Map changes to callbacks</span>
+        <span class="n">r_button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">go_right_by_one</span><span class="p">)</span>
+        <span class="n">l_button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">go_left_by_one</span><span class="p">)</span>
+        <span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="s1">&#39;indices&#39;</span><span class="p">,</span> <span class="n">update_upon_pixel_selection</span><span class="p">)</span>
+        <span class="n">lc_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="s1">&#39;indices&#39;</span><span class="p">,</span> <span class="n">jump_to_lightcurve_position</span><span class="p">)</span>
+        <span class="n">cadence_slider</span><span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">update_upon_cadence_change</span><span class="p">)</span>
+
+        <span class="c1"># Layout all of the plots</span>
+        <span class="n">space1</span><span class="p">,</span> <span class="n">space2</span><span class="p">,</span> <span class="n">space3</span> <span class="o">=</span> <span class="n">Spacer</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">15</span><span class="p">),</span> <span class="n">Spacer</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">Spacer</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+        <span class="n">widgets_and_figures</span> <span class="o">=</span> <span class="n">layout</span><span class="p">([</span><span class="n">fig_lc</span><span class="p">,</span> <span class="n">fig_tpf</span><span class="p">],</span>
+                                     <span class="p">[</span><span class="n">l_button</span><span class="p">,</span> <span class="n">space1</span><span class="p">,</span> <span class="n">r_button</span><span class="p">,</span> <span class="n">space2</span><span class="p">,</span>
+                                      <span class="n">cadence_slider</span><span class="p">,</span> <span class="n">space3</span><span class="p">,</span> <span class="n">stretch_slider</span><span class="p">])</span>
+        <span class="n">doc</span><span class="o">.</span><span class="n">add_root</span><span class="p">(</span><span class="n">widgets_and_figures</span><span class="p">)</span>
+
+    <span class="n">output_notebook</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_banner</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">show</span><span class="p">(</span><span class="n">create_interact_ui</span><span class="p">,</span> <span class="n">notebook_url</span><span class="o">=</span><span class="n">notebook_url</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># %load -s show_interact_widget ../../../lightkurve/interact.py</span>
+<span class="k">def</span> <span class="nf">show_interact_widget</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">notebook_url</span><span class="o">=</span><span class="s1">&#39;localhost:8888&#39;</span><span class="p">,</span>
+                         <span class="n">max_cadences</span><span class="o">=</span><span class="mi">30000</span><span class="p">,</span>
+                         <span class="n">aperture_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                         <span class="n">exported_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display an interactive Jupyter Notebook widget to inspect the pixel data.</span>
+
+<span class="sd">    The widget will show both the lightcurve and pixel data.  The pixel data</span>
+<span class="sd">    supports pixel selection via Bokeh tap and box select tools in an</span>
+<span class="sd">    interactive javascript user interface.</span>
+
+<span class="sd">    Note: at this time, this feature only works inside an active Jupyter</span>
+<span class="sd">    Notebook, and tends to be too slow when more than ~30,000 cadences</span>
+<span class="sd">    are contained in the TPF (e.g. short cadence data).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tpf : lightkurve.TargetPixelFile</span>
+<span class="sd">        Target Pixel File to interact with</span>
+<span class="sd">    notebook_url: str</span>
+<span class="sd">        Location of the Jupyter notebook page (default: &quot;localhost:8888&quot;)</span>
+<span class="sd">        When showing Bokeh applications, the Bokeh server must be</span>
+<span class="sd">        explicitly configured to allow connections originating from</span>
+<span class="sd">        different URLs. This parameter defaults to the standard notebook</span>
+<span class="sd">        host and port. If you are running on a different location, you</span>
+<span class="sd">        will need to supply this value for the application to display</span>
+<span class="sd">        properly. If no protocol is supplied in the URL, e.g. if it is</span>
+<span class="sd">        of the form &quot;localhost:8888&quot;, then &quot;http&quot; will be used.</span>
+<span class="sd">    max_cadences : int</span>
+<span class="sd">        Raise a RuntimeError if the number of cadences shown is larger than</span>
+<span class="sd">        this value. This limit helps keep browsers from becoming unresponsive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">bokeh</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The interact() tool requires the `bokeh` package; &quot;</span>
+                  <span class="s2">&quot;you can install bokeh using e.g. `conda install bokeh`.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">aperture_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">aperture_mask</span><span class="o">=</span><span class="n">tpf</span><span class="o">.</span><span class="n">pipeline_mask</span>
+
+    <span class="k">if</span> <span class="n">exported_filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">exported_filename</span> <span class="o">=</span> <span class="n">make_default_export_name</span><span class="p">(</span><span class="n">tpf</span><span class="p">)</span>
+
+    <span class="n">lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">)</span>
+
+    <span class="n">n_pixels</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">pixel_index_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_pixels</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># Bokeh cannot handle many data points</span>
+    <span class="c1"># https://github.com/bokeh/bokeh/issues/7490</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_cadences</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;Interact cannot display more than </span><span class="si">{}</span><span class="s1"> cadences.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_cadences</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">create_interact_ui</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="c1"># The data source includes metadata for hover-over tooltips</span>
+        <span class="n">lc_source</span> <span class="o">=</span> <span class="n">prepare_lightcurve_datasource</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
+        <span class="n">tpf_source</span> <span class="o">=</span> <span class="n">prepare_tpf_datasource</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">aperture_mask</span><span class="p">)</span>
+
+        <span class="c1"># Create the lightcurve figure and its vertical marker</span>
+        <span class="n">fig_lc</span><span class="p">,</span> <span class="n">vertical_line</span> <span class="o">=</span> <span class="n">make_lightcurve_figure_elements</span><span class="p">(</span><span class="n">lc</span><span class="p">,</span> <span class="n">lc_source</span><span class="p">)</span>
+
+        <span class="c1"># Create the TPF figure and its stretch slider</span>
+        <span class="n">pedestal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">)</span>
+        <span class="n">fig_tpf</span><span class="p">,</span> <span class="n">stretch_slider</span> <span class="o">=</span> <span class="n">make_tpf_figure_elements</span><span class="p">(</span><span class="n">tpf</span><span class="p">,</span> <span class="n">tpf_source</span><span class="p">,</span> <span class="n">pedestal</span><span class="o">=</span><span class="n">pedestal</span><span class="p">)</span>
+
+        <span class="c1"># Helper lookup table which maps cadence number onto flux array index.</span>
+        <span class="n">tpf_index_lookup</span> <span class="o">=</span> <span class="p">{</span><span class="n">cad</span><span class="p">:</span> <span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">cad</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">)}</span>
+
+        <span class="c1"># Interactive slider widgets and buttons to select the cadence number</span>
+        <span class="n">cadence_slider</span> <span class="o">=</span> <span class="n">Slider</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">),</span>
+                                <span class="n">end</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">),</span>
+                                <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">),</span>
+                                <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                                <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Cadence Number&quot;</span><span class="p">,</span>
+                                <span class="n">width</span><span class="o">=</span><span class="mi">490</span><span class="p">)</span>
+        <span class="n">r_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">l_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="n">export_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Save Lightcurve&quot;</span><span class="p">,</span> <span class="n">button_type</span><span class="o">=</span><span class="s2">&quot;success&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+
+        <span class="c1"># Callbacks</span>
+        <span class="k">def</span> <span class="nf">update_upon_pixel_selection</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;Callback to take action when pixels are selected.&quot;&quot;&quot;</span>
+            <span class="c1"># Check if a selection was &quot;re-clicked&quot;, then de-select</span>
+            <span class="k">if</span> <span class="p">((</span><span class="nb">sorted</span><span class="p">(</span><span class="n">old</span><span class="p">)</span> <span class="o">==</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">new</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">new</span> <span class="o">!=</span> <span class="p">[])):</span>
+                <span class="c1"># Trigger recursion</span>
+                <span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="n">new</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">!=</span> <span class="p">[]):</span>
+                <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+                <span class="n">selected_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pixel_index_array</span><span class="p">,</span> <span class="n">selected_indices</span><span class="p">)</span>
+                <span class="n">lc_new</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">selected_mask</span><span class="p">)</span>
+                <span class="n">lc_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lc_new</span><span class="o">.</span><span class="n">flux</span>
+                <span class="n">ylims</span> <span class="o">=</span> <span class="n">get_lightcurve_y_limits</span><span class="p">(</span><span class="n">lc_source</span><span class="p">)</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lc_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;flux&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">flux</span> <span class="o">*</span> <span class="mf">0.0</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">fig_lc</span><span class="o">.</span><span class="n">y_range</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">update_upon_cadence_change</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+            <span class="sd">&#39;&#39;&#39;Callback to take action when cadence slider changes&#39;&#39;&#39;</span>
+            <span class="k">if</span> <span class="n">new</span> <span class="ow">in</span> <span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">:</span>
+                <span class="n">frameno</span> <span class="o">=</span> <span class="n">tpf_index_lookup</span><span class="p">[</span><span class="n">new</span><span class="p">]</span>
+                <span class="n">fig_tpf</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;tpfimg&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="n">frameno</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+                                                                         <span class="o">-</span> <span class="n">pedestal</span><span class="p">]</span>
+                <span class="n">vertical_line</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">tpf</span><span class="o">.</span><span class="n">time</span><span class="p">[</span><span class="n">frameno</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fig_tpf</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;tpfimg&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data_source</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">]</span>
+            <span class="n">lc_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">def</span> <span class="nf">go_right_by_one</span><span class="p">():</span>
+            <span class="n">existing_value</span> <span class="o">=</span> <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">existing_value</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">):</span>
+                <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">existing_value</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">go_left_by_one</span><span class="p">():</span>
+            <span class="n">existing_value</span> <span class="o">=</span> <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">if</span> <span class="n">existing_value</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">tpf</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">):</span>
+                <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">existing_value</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="k">def</span> <span class="nf">export_mask</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+                <span class="n">selected_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pixel_index_array</span><span class="p">,</span> <span class="n">selected_indices</span><span class="p">)</span>
+                <span class="n">lc_new</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">selected_mask</span><span class="p">)</span>
+                <span class="n">lc_new</span><span class="o">.</span><span class="n">to_fits</span><span class="p">(</span><span class="n">exported_filename</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                               <span class="n">aperture_mask</span><span class="o">=</span><span class="n">selected_mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">),</span>
+                               <span class="n">SOURCE</span><span class="o">=</span><span class="s1">&#39;lightkurve interact&#39;</span><span class="p">,</span>
+                               <span class="n">NOTE</span><span class="o">=</span><span class="s1">&#39;custom mask&#39;</span><span class="p">,</span>
+                               <span class="n">MASKNPIX</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">selected_mask</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No pixels selected, no mask saved.&quot;</span><span class="p">)</span>
+
+
+        <span class="k">def</span> <span class="nf">jump_to_lightcurve_position</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">new</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">cadence_slider</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">cadenceno</span><span class="p">[</span><span class="n">new</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+        <span class="c1"># Map changes to callbacks</span>
+        <span class="n">r_button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">go_right_by_one</span><span class="p">)</span>
+        <span class="n">l_button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">go_left_by_one</span><span class="p">)</span>
+        <span class="n">export_button</span><span class="o">.</span><span class="n">on_click</span><span class="p">(</span><span class="n">export_mask</span><span class="p">)</span>
+        <span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="s1">&#39;indices&#39;</span><span class="p">,</span> <span class="n">update_upon_pixel_selection</span><span class="p">)</span>
+        <span class="n">lc_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="s1">&#39;indices&#39;</span><span class="p">,</span> <span class="n">jump_to_lightcurve_position</span><span class="p">)</span>
+        <span class="n">cadence_slider</span><span class="o">.</span><span class="n">on_change</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">update_upon_cadence_change</span><span class="p">)</span>
+
+        <span class="c1"># Layout all of the plots</span>
+        <span class="n">space1</span><span class="p">,</span> <span class="n">space2</span><span class="p">,</span> <span class="n">space3</span> <span class="o">=</span> <span class="n">Spacer</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">15</span><span class="p">),</span> <span class="n">Spacer</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">Spacer</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+        <span class="n">widgets_and_figures</span> <span class="o">=</span> <span class="n">layout</span><span class="p">([</span><span class="n">fig_lc</span><span class="p">,</span> <span class="n">fig_tpf</span><span class="p">],</span>
+                                     <span class="p">[</span><span class="n">l_button</span><span class="p">,</span> <span class="n">space1</span><span class="p">,</span> <span class="n">r_button</span><span class="p">,</span> <span class="n">space2</span><span class="p">,</span>
+                                      <span class="n">cadence_slider</span><span class="p">,</span> <span class="n">space3</span><span class="p">,</span> <span class="n">stretch_slider</span><span class="p">],</span>
+                                      <span class="p">[</span><span class="n">export_button</span><span class="p">])</span>
+        <span class="n">doc</span><span class="o">.</span><span class="n">add_root</span><span class="p">(</span><span class="n">widgets_and_figures</span><span class="p">)</span>
+
+    <span class="n">output_notebook</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hide_banner</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">show</span><span class="p">(</span><span class="n">create_interact_ui</span><span class="p">,</span> <span class="n">notebook_url</span><span class="o">=</span><span class="n">notebook_url</span><span class="p">)</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">show_interact_widget</span><span class="p">(</span><span class="n">tpf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div></div>
+<script type="text/javascript">
+var element = document.currentScript.previousSibling.previousSibling;
+
+(function(root) {
+  function now() {
+    return new Date();
+  }
+
+  var force = true;
+
+  if (typeof (root._bokeh_onload_callbacks) === "undefined" || force === true) {
+    root._bokeh_onload_callbacks = [];
+    root._bokeh_is_loading = undefined;
+  }
+
+  var JS_MIME_TYPE = 'application/javascript';
+  var HTML_MIME_TYPE = 'text/html';
+  var EXEC_MIME_TYPE = 'application/vnd.bokehjs_exec.v0+json';
+  var CLASS_NAME = 'output_bokeh rendered_html';
+
+  /**
+   * Render data to the DOM node
+   */
+  function render(props, node) {
+    var script = document.createElement("script");
+    node.appendChild(script);
+  }
+
+  /**
+   * Handle when an output is cleared or removed
+   */
+  function handleClearOutput(event, handle) {
+    var cell = handle.cell;
+
+    var id = cell.output_area._bokeh_element_id;
+    var server_id = cell.output_area._bokeh_server_id;
+    // Clean up Bokeh references
+    if (id != null && id in Bokeh.index) {
+      Bokeh.index[id].model.document.clear();
+      delete Bokeh.index[id];
+    }
+
+    if (server_id !== undefined) {
+      // Clean up Bokeh references
+      var cmd = "from bokeh.io.state import curstate; print(curstate().uuid_to_server['" + server_id + "'].get_sessions()[0].document.roots[0]._id)";
+      cell.notebook.kernel.execute(cmd, {
+        iopub: {
+          output: function(msg) {
+            var id = msg.content.text.trim();
+            if (id in Bokeh.index) {
+              Bokeh.index[id].model.document.clear();
+              delete Bokeh.index[id];
+            }
+          }
+        }
+      });
+      // Destroy server and session
+      var cmd = "import bokeh.io.notebook as ion; ion.destroy_server('" + server_id + "')";
+      cell.notebook.kernel.execute(cmd);
+    }
+  }
+
+  /**
+   * Handle when a new output is added
+   */
+  function handleAddOutput(event, handle) {
+    var output_area = handle.output_area;
+    var output = handle.output;
+
+    // limit handleAddOutput to display_data with EXEC_MIME_TYPE content only
+    if ((output.output_type != "display_data") || (!output.data.hasOwnProperty(EXEC_MIME_TYPE))) {
+      return
+    }
+
+    var toinsert = output_area.element.find("." + CLASS_NAME.split(' ')[0]);
+
+    if (output.metadata[EXEC_MIME_TYPE]["id"] !== undefined) {
+      toinsert[toinsert.length - 1].firstChild.textContent = output.data[JS_MIME_TYPE];
+      // store reference to embed id on output_area
+      output_area._bokeh_element_id = output.metadata[EXEC_MIME_TYPE]["id"];
+    }
+    if (output.metadata[EXEC_MIME_TYPE]["server_id"] !== undefined) {
+      var bk_div = document.createElement("div");
+      bk_div.innerHTML = output.data[HTML_MIME_TYPE];
+      var script_attrs = bk_div.children[0].attributes;
+      for (var i = 0; i < script_attrs.length; i++) {
+        toinsert[toinsert.length - 1].firstChild.setAttribute(script_attrs[i].name, script_attrs[i].value);
+      }
+      // store reference to server id on output_area
+      output_area._bokeh_server_id = output.metadata[EXEC_MIME_TYPE]["server_id"];
+    }
+  }
+
+  function register_renderer(events, OutputArea) {
+
+    function append_mime(data, metadata, element) {
+      // create a DOM node to render to
+      var toinsert = this.create_output_subarea(
+        metadata,
+        CLASS_NAME,
+        EXEC_MIME_TYPE
+      );
+      this.keyboard_manager.register_events(toinsert);
+      // Render to node
+      var props = {data: data, metadata: metadata[EXEC_MIME_TYPE]};
+      render(props, toinsert[toinsert.length - 1]);
+      element.append(toinsert);
+      return toinsert
+    }
+
+    /* Handle when an output is cleared or removed */
+    events.on('clear_output.CodeCell', handleClearOutput);
+    events.on('delete.Cell', handleClearOutput);
+
+    /* Handle when a new output is added */
+    events.on('output_added.OutputArea', handleAddOutput);
+
+    /**
+     * Register the mime type and append_mime function with output_area
+     */
+    OutputArea.prototype.register_mime_type(EXEC_MIME_TYPE, append_mime, {
+      /* Is output safe? */
+      safe: true,
+      /* Index of renderer in `output_area.display_order` */
+      index: 0
+    });
+  }
+
+  // register the mime type if in Jupyter Notebook environment and previously unregistered
+  if (root.Jupyter !== undefined) {
+    var events = require('base/js/events');
+    var OutputArea = require('notebook/js/outputarea').OutputArea;
+
+    if (OutputArea.prototype.mime_types().indexOf(EXEC_MIME_TYPE) == -1) {
+      register_renderer(events, OutputArea);
+    }
+  }
+
+
+  if (typeof (root._bokeh_timeout) === "undefined" || force === true) {
+    root._bokeh_timeout = Date.now() + 5000;
+    root._bokeh_failed_load = false;
+  }
+
+  var NB_LOAD_WARNING = {'data': {'text/html':
+     "<div style='background-color: #fdd'>\n"+
+     "<p>\n"+
+     "BokehJS does not appear to have successfully loaded. If loading BokehJS from CDN, this \n"+
+     "may be due to a slow or bad network connection. Possible fixes:\n"+
+     "</p>\n"+
+     "<ul>\n"+
+     "<li>re-rerun `output_notebook()` to attempt to load from CDN again, or</li>\n"+
+     "<li>use INLINE resources instead, as so:</li>\n"+
+     "</ul>\n"+
+     "<code>\n"+
+     "from bokeh.resources import INLINE\n"+
+     "output_notebook(resources=INLINE)\n"+
+     "</code>\n"+
+     "</div>"}};
+
+  function display_loaded() {
+    var el = document.getElementById(null);
+    if (el != null) {
+      el.textContent = "BokehJS is loading...";
+    }
+    if (root.Bokeh !== undefined) {
+      if (el != null) {
+        el.textContent = "BokehJS " + root.Bokeh.version + " successfully loaded.";
+      }
+    } else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(display_loaded, 100)
+    }
+  }
+
+
+  function run_callbacks() {
+    try {
+      root._bokeh_onload_callbacks.forEach(function(callback) { callback() });
+    }
+    finally {
+      delete root._bokeh_onload_callbacks
+    }
+    console.info("Bokeh: all callbacks have finished");
+  }
+
+  function load_libs(js_urls, callback) {
+    root._bokeh_onload_callbacks.push(callback);
+    if (root._bokeh_is_loading > 0) {
+      console.log("Bokeh: BokehJS is being loaded, scheduling callback at", now());
+      return null;
+    }
+    if (js_urls == null || js_urls.length === 0) {
+      run_callbacks();
+      return null;
+    }
+    console.log("Bokeh: BokehJS not loaded, scheduling load and callback at", now());
+    root._bokeh_is_loading = js_urls.length;
+    for (var i = 0; i < js_urls.length; i++) {
+      var url = js_urls[i];
+      var s = document.createElement('script');
+      s.src = url;
+      s.async = false;
+      s.onreadystatechange = s.onload = function() {
+        root._bokeh_is_loading--;
+        if (root._bokeh_is_loading === 0) {
+          console.log("Bokeh: all BokehJS libraries loaded");
+          run_callbacks()
+        }
+      };
+      s.onerror = function() {
+        console.warn("failed to load library " + url);
+      };
+      console.log("Bokeh: injecting script tag for BokehJS library: ", url);
+      document.getElementsByTagName("head")[0].appendChild(s);
+    }
+  };
+
+  var js_urls = ["https://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.js", "https://cdn.pydata.org/bokeh/release/bokeh-gl-1.0.1.min.js"];
+
+  var inline_js = [
+    function(Bokeh) {
+      Bokeh.set_log_level("info");
+    },
+
+    function(Bokeh) {
+
+    },
+    function(Bokeh) {
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-1.0.1.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.1.min.css");
+      console.log("Bokeh: injecting CSS: https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.css");
+      Bokeh.embed.inject_css("https://cdn.pydata.org/bokeh/release/bokeh-tables-1.0.1.min.css");
+    }
+  ];
+
+  function run_inline_js() {
+
+    if ((root.Bokeh !== undefined) || (force === true)) {
+      for (var i = 0; i < inline_js.length; i++) {
+        inline_js[i].call(root, root.Bokeh);
+      }} else if (Date.now() < root._bokeh_timeout) {
+      setTimeout(run_inline_js, 100);
+    } else if (!root._bokeh_failed_load) {
+      console.log("Bokeh: BokehJS failed to load within specified timeout.");
+      root._bokeh_failed_load = true;
+    } else if (force !== true) {
+      var cell = $(document.getElementById(null)).parents('.cell').data().cell;
+      cell.output_area.append_execute_result(NB_LOAD_WARNING)
+    }
+
+  }
+
+  if (root._bokeh_is_loading === 0) {
+    console.log("Bokeh: BokehJS loaded, going straight to plotting");
+    run_inline_js();
+  } else {
+    load_libs(js_urls, function() {
+      console.log("Bokeh: BokehJS plotting callback run at", now());
+      run_inline_js();
+    });
+  }
+}(window));
+</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script src="http://localhost:63252/autoload.js?bokeh-autoload-element=3525&bokeh-absolute-url=http://localhost:63252&resources=none" id="3525"></script></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">bokeh</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[8]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>&#39;1.0.1&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf_source</span> <span class="o">=</span> <span class="n">prepare_tpf_datasource</span><span class="p">(</span><span class="n">tpf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">59</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">61</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">on_event</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[50]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>[49, 50, 59, 60, 61, 71, 72]
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [58]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="n">Selection</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">61</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [77]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tpf_source</span><span class="o">.</span><span class="n">selected</span><span class="o">.</span><span class="n">on_event</span><span class="p">(</span><span class="n">bokeh</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">SelectionGeometry</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;event!!!&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>Out[77]:
+</pre></div>
+</div>
+<div class="output_area highlight-none notranslate"><div class="highlight"><pre>
+<span></span>{&#39;id&#39;: &#39;16431&#39;,
+ &#39;indices&#39;: [60, 61],
+ &#39;js_event_callbacks&#39;: {},
+ &#39;js_property_callbacks&#39;: {},
+ &#39;line_indices&#39;: [],
+ &#39;multiline_indices&#39;: {},
+ &#39;name&#39;: None,
+ &#39;subscribed_events&#39;: [],
+ &#39;tags&#39;: []}
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-75-e82920d99448&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>tpf_source<span class="ansi-blue-fg">.</span>selected<span class="ansi-blue-fg">.</span>remove_on_change<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;indices&#39;</span><span class="ansi-blue-fg">,</span> update_upon_pixel_selection<span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">NameError</span>: name &#39;update_upon_pixel_selection&#39; is not defined
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [86]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-86-4e63ef43941a&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>bokeh<span class="ansi-blue-fg">.</span>events<span class="ansi-blue-fg">.</span>SelectionGeometry<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: __init__() missing 1 required positional argument: &#39;model&#39;
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre>
+<span></span>In [ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright lightkurve developers and contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

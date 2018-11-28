@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>How to recover the first TESS planet candidate with Lightkurve? &mdash; lightkurve 1.0b22 documentation</title>
+  <title>How to recover the first TESS planet candidate with Lightkurve? &mdash; lightkurve 1.0b23.dev documentation</title>
   
 
   
@@ -26,6 +26,7 @@
 
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
 
@@ -59,7 +60,7 @@
             
             
               <div class="version">
-                1.0b22
+                1.0b23.dev
               </div>
             
           
@@ -368,7 +369,7 @@ candidate on a 6.27 day orbit. See the <a class="reference external" href="https
 Document</a>.
 <em>Lightkurve</em> provides a <code class="docutils literal notranslate"><span class="pre">TessTargetPixelFile</span></code> class which allows you
 to interact with the data easily.</p>
-<div class="nbinput nblast docutils container">
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [1]:
 </pre></div>
@@ -379,8 +380,16 @@ to interact with the data easily.</p>
 </pre></div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">TessTargetPixelFile</span></code>’s have many helpful methods and attributes. For
-example, you can access basic meta data on the target easily:</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Downloading https://archive.stsci.edu/hlsps/tess-data-alerts/hlsp_tess-data-alerts_tess_phot_00261136679-s01_tess_v1_tp.fits [Done]
+</pre></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">TessTargetPixelFile</span></code>’s have many helpful methods and attributes.
+For example, you can access basic meta data on the target easily:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
 <span></span>In [2]:
@@ -523,7 +532,7 @@ can use the <code class="docutils literal notranslate"><span class="pre">hdu</sp
 </pre></div>
 </div>
 <div class="output_area highlight-none notranslate"><div class="highlight"><pre>
-<span></span>[&lt;astropy.io.fits.hdu.image.PrimaryHDU object at 0x7ff460fdcd68&gt;, &lt;astropy.io.fits.hdu.table.BinTableHDU object at 0x7ff4610004a8&gt;, &lt;astropy.io.fits.hdu.image.ImageHDU object at 0x7ff45b683fd0&gt;, &lt;astropy.io.fits.hdu.table.BinTableHDU object at 0x7ff45b4a84e0&gt;]
+<span></span>[&lt;astropy.io.fits.hdu.image.PrimaryHDU object at 0x1c22b3ee10&gt;, &lt;astropy.io.fits.hdu.table.BinTableHDU object at 0x1c22b9c550&gt;, &lt;astropy.io.fits.hdu.image.ImageHDU object at 0x1c22b67f98&gt;, &lt;astropy.io.fits.hdu.table.BinTableHDU object at 0x1c2a7dda58&gt;]
 </pre></div>
 </div>
 </div>
@@ -936,7 +945,7 @@ we’ll select the times that had the jitter.</p>
 to see the difference.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [22]:
+<span></span>In [21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -960,7 +969,7 @@ the light curve. We can do that with a simple lightkurve function
 <code class="docutils literal notranslate"><span class="pre">remove_outliers()</span></code></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [23]:
+<span></span>In [22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -983,7 +992,7 @@ Let’s use a scatter plot instead. We can do this with the
 arguments.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [24]:
+<span></span>In [23]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1001,7 +1010,7 @@ arguments.</p>
 <p>We can also add errorbars using the <code class="docutils literal notranslate"><span class="pre">lc.errorbar()</span></code> method.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [25]:
+<span></span>In [24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1021,7 +1030,7 @@ arguments.</p>
 orbital period and see if we can see the transit.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [26]:
+<span></span>In [25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1043,7 +1052,7 @@ the light curve to reduce the number of points, but also reduce the
 uncertainty of those points.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [27]:
+<span></span>In [26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1063,7 +1072,7 @@ uncertainty of those points.</p>
 <p>Note that you can actually do all these steps in just a few lines:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [28]:
+<span></span>In [27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1088,7 +1097,7 @@ aperture. Let’s compare the results from using these two different
 apertures.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [29]:
+<span></span>In [28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1104,7 +1113,7 @@ apertures.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre>
-<span></span>In [30]:
+<span></span>In [29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1138,7 +1147,7 @@ removal methods applied. We will explore those in a future tutorial!</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright lightkurve developers and contributors.
+        &copy; Copyright lightkurve developers and contributors
 
     </p>
   </div>
@@ -1157,21 +1166,14 @@ removal methods applied. We will explore those in a future tutorial!</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../../',
-            VERSION:'1.0b22',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../../_static/jquery.js"></script>
-      <script type="text/javascript" src="../../_static/underscore.js"></script>
-      <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 
